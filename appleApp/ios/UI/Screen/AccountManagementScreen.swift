@@ -72,7 +72,7 @@ struct AccountManagementScreen: View {
         }
         .navigationTitle("account_management_title")
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 NBNavigationLink(value: Route.serviceSelect) {
                     Label {
                         Text("login_title")
