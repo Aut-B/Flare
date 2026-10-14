@@ -1,8 +1,9 @@
 import Foundation
 @preconcurrency import KotlinSharedUI
 import SwiftUI
+import Perception
 
-@Observable
+@Perceptible
 public final class ComposeContentViewModel {
     public var text: String
     public var contentWarning: String

@@ -1,6 +1,7 @@
 import SwiftUI
+import Perception
 
-@Observable
+@Perceptible
 public final class IsScrollingState {
     public var isScrolling: Bool
 
@@ -39,7 +40,7 @@ private struct DetectScrollingModifier: ViewModifier {
                 proxy.frame(in: .global)
             } action: { playbackViewport = $0 }
             .onAppear { playback.setSuspended(scenePhase != .active) }
-            .onChange(of: scenePhase) { _, phase in playback.setSuspended(phase != .active) }
+            .backportOnChange(of: scenePhase) { _, phase in playback.setSuspended(phase != .active) }
             .onDisappear { playback.setSuspended(true) }
     }
 
@@ -56,7 +57,7 @@ private struct DetectScrollingModifier: ViewModifier {
                 .onScrollGeometryChange(for: CGFloat.self) { $0.contentOffset.y } action: { old, new in
                     if old != new { playback.moved(source: "vertical", vertical: true) }
                 }
-                .onChange(of: rawIsScrolling) { _, newValue in
+                .backportOnChange(of: rawIsScrolling) { _, newValue in
                     if newValue {
                         debounceTask?.cancel()
                         isScrolling = true

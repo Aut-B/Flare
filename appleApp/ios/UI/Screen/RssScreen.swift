@@ -2,6 +2,7 @@ import FlareAppleCore
 import FlareAppleUI
 import KotlinSharedUI
 import SwiftUI
+import NavigationBackport
 
 struct RssScreen: View {
     @State private var presenter = KotlinPresenter(presenter: RssListWithTabsPresenter())
@@ -13,7 +14,7 @@ struct RssScreen: View {
     var body: some View {
         List {
             ForEach(presenter.state.sources, id: \.id) { item in
-                NavigationLink(value: Route.timeline(
+                NBNavigationLink(value: Route.timeline(
                     presenter.state.timelineTabItem(item: item)
                 )) {
                     HStack {
@@ -80,7 +81,7 @@ struct RssScreen: View {
             }
         }
         .sheet(isPresented: $showAddSheet) {
-            NavigationStack {
+            NBNavigationStack {
                 EditRssSheet(id: nil, onImportOPML: { url in
                     showAddSheet = false
                     importOpmlUrl = url
@@ -88,7 +89,7 @@ struct RssScreen: View {
             }
         }
         .sheet(item: $selectedEditItem) { item in
-            NavigationStack {
+            NBNavigationStack {
                 EditRssSheet(
                     id: Int(item.id),
                     initialUrl: item.url,
@@ -100,7 +101,7 @@ struct RssScreen: View {
             }
         }
         .sheet(item: $importOpmlUrl) { url in
-            NavigationStack {
+            NBNavigationStack {
                 ImportOPMLScreen(url: url)
             }
         }

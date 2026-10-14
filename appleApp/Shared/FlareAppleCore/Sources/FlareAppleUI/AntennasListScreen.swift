@@ -1,6 +1,7 @@
 import SwiftUI
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 public struct AntennasListScreen<Destination: Hashable>: View {
     private let accountType: AccountType
@@ -19,7 +20,7 @@ public struct AntennasListScreen<Destination: Hashable>: View {
     public var body: some View {
         List {
             PagingView(data: presenter.state.data) { item in
-                NavigationLink(
+                NBNavigationLink(
                     value: timelineDestination(presenter.state.timelineTabItem(item: item))
                 ) {
                     UiListView(data: item)

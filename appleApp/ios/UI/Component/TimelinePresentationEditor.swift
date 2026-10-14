@@ -2,6 +2,7 @@ import SwiftUI
 import FlareAppleUI
 import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 public struct TimelinePresentationEditor: View {
     @Binding var text: String
@@ -298,7 +299,7 @@ private struct TimelinePresentationHeaderEditor: View {
             }
         }
         .sheet(isPresented: $showIconPicker) {
-            NavigationStack {
+            NBNavigationStack {
                 IconPicker(
                     selectedIcon: icon,
                     availableIcons: availableIcons,
@@ -681,7 +682,7 @@ private struct AppearanceOverrideGroup<Content: View>: View {
                 .labelsHidden()
             }
         }
-        .onChange(of: overridesEnabled) { _, value in
+        .backportOnChange(of: overridesEnabled) { _, value in
             withAnimation {
                 expanded = value
             }

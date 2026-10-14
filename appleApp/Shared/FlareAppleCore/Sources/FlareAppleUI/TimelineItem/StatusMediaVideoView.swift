@@ -118,23 +118,23 @@ public struct VideoControlView: View {
         .onDisappear {
             if isSeeking { currentTime = CMTime(seconds: sliderValue, preferredTimescale: 600) }
         }
-        .onChange(of: currentTime.seconds) { _, newValue in
+        .backportOnChange(of: currentTime.seconds) { _, newValue in
             guard !isSeeking, newValue.isFinite else { return }
             baselineSeconds = newValue
             baselineDate = Date()
             sliderValue = newValue
         }
-        .onChange(of: isProgressActive) { _, active in
+        .backportOnChange(of: isProgressActive) { _, active in
             if active {
                 baselineSeconds = sliderValue
                 baselineDate = Date()
             }
         }
-        .onChange(of: playbackRate) { _, _ in
+        .backportOnChange(of: playbackRate) { _, _ in
             baselineSeconds = sliderValue
             baselineDate = Date()
         }
-        .onChange(of: duration) { _, newValue in
+        .backportOnChange(of: duration) { _, newValue in
             if sliderValue > newValue {
                 sliderValue = newValue
             }
@@ -249,16 +249,16 @@ public struct StatusMediaVideoView: View {
             }
             updatePlayback()
         }
-        .onChange(of: play) { _, _ in updatePlayback() }
-        .onChange(of: scenePhase) { _, phase in
+        .backportOnChange(of: play) { _, _ in updatePlayback() }
+        .backportOnChange(of: scenePhase) { _, phase in
             if presentation == nil { fallbackPresentation.setSuspended(phase != .active) }
         }
-        .onChange(of: playbackRate) { _, _ in updatePlayback() }
-        .onChange(of: data.url) { _, _ in
+        .backportOnChange(of: playbackRate) { _, _ in updatePlayback() }
+        .backportOnChange(of: data.url) { _, _ in
             session.detach()
             updatePlayback()
         }
-        .onChange(of: time) { _, target in
+        .backportOnChange(of: time) { _, target in
             if target == time, session.mediaURL == data.url,
                target.seconds.isFinite, abs(session.position - target.seconds) > 0.5 {
                 session.seek(to: target.seconds)

@@ -34,7 +34,7 @@ struct CreateListScreen: View {
                                     .frame(width: 96, height: 96)
                             }
                         }
-                        .onChange(of: avatar) { oldItem, newItem in
+                        .backportOnChange(of: avatar) { oldItem, newItem in
                               Task {
                                   if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                       if let uiImage = UIImage(data: data) {

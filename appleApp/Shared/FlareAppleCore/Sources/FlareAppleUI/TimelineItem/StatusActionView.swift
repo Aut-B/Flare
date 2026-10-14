@@ -776,14 +776,14 @@ public struct MacStatusShareSheet: View {
             .onAppear {
                 renderScreenshot(data: state)
             }
-            .onChange(of: theme) { _, _ in
+            .backportOnChange(of: theme) { _, _ in
                 renderScreenshot(data: state)
             }
-            .onChange(of: previewStyle) { _, _ in
+            .backportOnChange(of: previewStyle) { _, _ in
                 renderScreenshot(data: state)
             }
         } errorContent: { error in
-            ContentUnavailableView {
+            BackportContentUnavailableView {
                 Label("share_screenshot_failed", systemImage: "exclamationmark.triangle")
             } description: {
                 Text(error.message ?? String(localized: "share_screenshot_failed"))

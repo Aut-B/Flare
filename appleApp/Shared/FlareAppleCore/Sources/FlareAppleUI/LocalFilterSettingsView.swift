@@ -5,6 +5,7 @@ import SwiftUI
 
 #if os(iOS)
 import UIKit
+import NavigationBackport
 #endif
 
 public struct LocalFilterSettingsView: View {
@@ -35,7 +36,7 @@ public struct LocalFilterSettingsView: View {
                 selectedFilter = nil
             }
         ) {
-            NavigationStack {
+            NBNavigationStack {
                 LocalFilterEditSheet(filter: selectedFilter) { keyword, forTimeline, forNotification, forSearch, isRegex in
                     presenter.state.add(
                         item: .init(

@@ -133,7 +133,7 @@ public struct AgentChatView: View {
 
 private struct AgentChatEmptyPlaceholder: View {
     var body: some View {
-        ContentUnavailableView {
+        BackportContentUnavailableView {
             Label {
                 Text("agent_chat_empty_title", bundle: .main)
             } icon: {
@@ -217,7 +217,7 @@ private struct AgentChatInputBar: View {
             .glassEffect()
             .padding(.horizontal)
             .padding(.bottom)
-            .onChange(of: draft) { _, value in
+            .backportOnChange(of: draft) { _, value in
                 onInputChange(value)
             }
     }

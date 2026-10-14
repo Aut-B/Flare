@@ -1,7 +1,8 @@
 import SwiftUI
 import WebKit
-import Observation
+import Perception
 import FlareAppleUI
+import NavigationBackport
 
 @available(iOS 26.0, *)
 struct WebLoginScreen: View {
@@ -17,7 +18,7 @@ struct WebLoginScreen: View {
         self.onCookie = onCookie
     }
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             if let viewModel, viewModel.canShowWebView {
                 WebView(viewModel.page)
                     .onAppear {
@@ -75,7 +76,7 @@ struct NavigationDecider: WebPage.NavigationDeciding {
 }
 
 @available(iOS 26.0, *)
-@Observable
+@Perceptible
 final class WebLoginViewModel {
     var config: WebPage.Configuration
     var page: WebPage

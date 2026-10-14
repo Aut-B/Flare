@@ -55,7 +55,7 @@ struct HomeTimelineScreen: View {
             StateView(state: presenter.state.tabState) { state in
                 let tabs: [UiTimelineTabItem] = state.cast(UiTimelineTabItem.self)
                 if tabs.isEmpty {
-                    ContentUnavailableView("tab_settings_title", systemImage: "square.grid.2x2")
+                    BackportContentUnavailableView("tab_settings_title", systemImage: "square.grid.2x2")
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
                                 Image(fontAwesome: .gear)
@@ -120,7 +120,7 @@ struct HomeTimelineScreen: View {
                                 .transition(.move(edge: .top).combined(with: .opacity))
                             }
                         }
-                        .onChange(of: tabs.map { $0.id }, initial: true) { _, tabIds in
+                        .backportOnChange(of: tabs.map { $0.id }, initial: true) { _, tabIds in
                             if let selectedTabId, tabIds.contains(selectedTabId) {
                                 return
                             }

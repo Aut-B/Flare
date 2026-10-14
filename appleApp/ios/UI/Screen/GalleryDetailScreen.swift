@@ -2,6 +2,7 @@ import SwiftUI
 import FlareAppleUI
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 struct GalleryDetailScreen: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -123,7 +124,7 @@ struct GalleryDetailScreen: View {
             .padding(.bottom, 24)
         }
         .sheet(isPresented: $showInfoSheet) {
-            NavigationStack {
+            NBNavigationStack {
                 ScrollView {
                     LazyVStack(spacing: 2) {
                         GalleryAfterImagesContent(

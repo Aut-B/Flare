@@ -310,10 +310,10 @@ final class SharedVideoPlayer {
 }
 
 /// Lightweight per-view state. Inactive sessions retain progress, never a player.
-@Observable
+@Perceptible
 @MainActor
 public final class VideoPlaybackSession {
-    @ObservationIgnored private let updateSubject = PassthroughSubject<Void, Never>()
+    @PerceptionIgnored private let updateSubject = PassthroughSubject<Void, Never>()
     public var updates: AnyPublisher<Void, Never> { updateSubject.eraseToAnyPublisher() }
     public private(set) var player: AVQueuePlayer?
     public private(set) var state: VideoState = .idle
@@ -561,14 +561,14 @@ private struct VideoPlaybackPresentationModifier: ViewModifier {
                 presentation.setSuspended(scenePhase != .active)
                 presentation.begin()
             }
-            .onChange(of: mediaURLs) { _, urls in
+            .backportOnChange(of: mediaURLs) { _, urls in
                 presentation.selectMedia(urls: urls, selectedURL: selectedMediaURL)
             }
-            .onChange(of: selectedMediaURL) { _, url in
+            .backportOnChange(of: selectedMediaURL) { _, url in
                 presentation.selectMedia(urls: mediaURLs, selectedURL: url)
             }
             .onDisappear { presentation.end() }
-            .onChange(of: scenePhase) { _, phase in presentation.setSuspended(phase != .active) }
+            .backportOnChange(of: scenePhase) { _, phase in presentation.setSuspended(phase != .active) }
     }
 }
 
@@ -580,6 +580,7 @@ public extension View {
 
 #if os(iOS)
 import UIKit
+import Perception
 
 public final class VideoPlaybackSurfaceView: UIView {
     public override class var layerClass: AnyClass { AVPlayerLayer.self }

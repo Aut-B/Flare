@@ -123,7 +123,7 @@ public struct AgentChatHistoryEmptyView: View {
     public init() {}
 
     public var body: some View {
-        ContentUnavailableView {
+        BackportContentUnavailableView {
             Label {
                 Text("agent_history_empty", bundle: .main)
             } icon: {
@@ -142,7 +142,7 @@ public struct AgentChatHistoryDetailPlaceholder: View {
     }
 
     public var body: some View {
-        ContentUnavailableView {
+        BackportContentUnavailableView {
             Label {
                 Text("agent_history_title", bundle: .main)
             } icon: {

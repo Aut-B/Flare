@@ -21,7 +21,7 @@ struct IOSTimelineListEnvironment: ViewModifier {
     func body(content: Content) -> some View {
         content
             .environment(\.timelineAccountID, resolvedAccountKey)
-            .onChange(of: accountKey, initial: true) { _, key in
+            .backportOnChange(of: accountKey, initial: true) { _, key in
                 guard let key, key != resolvedAccountKey else { return }
                 resolvedAccountKey = key
             }

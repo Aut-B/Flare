@@ -1,7 +1,8 @@
 import SwiftUI
 import WebKit
-import Observation
+import Perception
 import FlareAppleUI
+import NavigationBackport
 
 struct BackportWebLoginScreen: View {
     @Environment(\.dismiss) var dismiss
@@ -17,7 +18,7 @@ struct BackportWebLoginScreen: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             if let viewModel, viewModel.canShowWebView {
                 BackportWebView(url: URL(string: url), configuration: viewModel.configuration) { webView in
                     webView.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
@@ -59,13 +60,13 @@ class WKDelegate: NSObject, WKNavigationDelegate {
     }
 }
 
-@Observable
+@Perceptible
 final class BackportWebLoginViewModel {
     var canShowWebView = false
     let url: String
     let onCookie: (String) -> Void
     let delegate: WKDelegate
-    @ObservationIgnored private var observers = [NSKeyValueObservation]()
+    @PerceptionIgnored private var observers = [NSKeyValueObservation]()
     init(
         onCookie: @escaping (String) -> Void,
         url: String

@@ -4,6 +4,7 @@ import LazyPager
 import Combine
 import FlareAppleCore
 import FlareAppleUI
+import NavigationBackport
 
 struct Router<Root: View>: View {
     @Environment(\.openURL) private var openURL
@@ -29,11 +30,11 @@ struct Router<Root: View>: View {
     }
     
     var body: some View {
-        NavigationStack(path: $backStack) {
+        NBNavigationStack(path: $backStack) {
             root({ route in
                 navigate(route: route)
             })
-            .navigationDestination(for: Route.self) { route in
+            .nbNavigationDestination(for: Route.self) { route in
                 route.view(
                     onNavigate: { route in navigate(route: route) },
                     goBack: { backStack.removeLast() }
@@ -43,19 +44,19 @@ struct Router<Root: View>: View {
         .environment(\.timelineMediaActionHandler, IOSTimelineMediaActions.handler)
         .sheet(item: $sheet) { route in
             if #available(iOS 18.0, *) {
-                NavigationStack {
+                NBNavigationStack {
                     route.view(
                         onNavigate: { route in navigate(route: route) },
                         goBack: { backStack.removeLast() }
                     )
                 }
             } else {
-                NavigationStack {
+                NBNavigationStack {
                     route.view(
                         onNavigate: { route in navigate(route: route) },
                         goBack: { backStack.removeLast() }
                     )
-                    .navigationDestination(for: Route.self) { destination in
+                    .nbNavigationDestination(for: Route.self) { destination in
                         destination.view(
                             onNavigate: { route in navigate(route: route) },
                             goBack: {}
@@ -65,7 +66,7 @@ struct Router<Root: View>: View {
             }
         }
         .fullScreenCover(item: $cover) { route in
-            NavigationStack {
+            NBNavigationStack {
                 route.view(
                     onNavigate: { route in navigate(route: route) },
                     goBack: { backStack.removeLast() }

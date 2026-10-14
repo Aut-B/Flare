@@ -1,8 +1,9 @@
-import Observation
+import Perception
 import FlareAppleCore
 import Foundation
 import KotlinSharedUI
 import SwiftUI
+import NavigationBackport
 
 public struct AiConfigSettingsView: View {
     @State private var state = AiConfigSettingsState()
@@ -28,7 +29,7 @@ public struct AiConfigSettingsSections: View {
     }
 }
 
-@Observable
+@Perceptible
 private final class AiConfigSettingsState {
     let presenter = KotlinPresenter(presenter: AiConfigPresenter())
     var editingField: AiConfigEditableField?
@@ -279,11 +280,11 @@ private struct AiConfigSettingsSectionsContent: View {
 }
 
 private struct AiConfigEditSheet: View {
-    @Bindable var state: AiConfigSettingsState
+    @Perception.Bindable var state: AiConfigSettingsState
     let field: AiConfigEditableField
 
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             Form {
                 Section {
                     if field.isMultiline {
@@ -362,7 +363,7 @@ private struct AiConfigEditSheet: View {
 
 private extension View {
     func aiConfigSettingsSheets(state: AiConfigSettingsState) -> some View {
-        @Bindable var state = state
+        @Perception.Bindable var state = state
         return sheet(item: $state.editingField) { field in
             AiConfigEditSheet(state: state, field: field)
         }

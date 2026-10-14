@@ -38,7 +38,7 @@ struct StatusMediaScreen: View {
         .onAppear {
             syncMediasIfNeeded(animated: false)
         }
-        .onChange(of: presenter.state.status) { oldValue, newValue in
+        .backportOnChange(of: presenter.state.status) { oldValue, newValue in
             syncMediasIfNeeded(animated: true)
         }
     }

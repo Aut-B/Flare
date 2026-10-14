@@ -487,16 +487,16 @@ public struct StatusView: View {
                 data.onClicked(ClickContext(launcher: AppleUriLauncher(openUrl: openURL)))
             }
         }
-        .onChange(of: data.renderHash) { _, _ in
+        .backportOnChange(of: data.renderHash) { _, _ in
             contentWarningExpanded = false
             textExpanded = false
             overflowingTextIndexes.removeAll()
         }
-        .onChange(of: effectiveLineLimit) { _, _ in
+        .backportOnChange(of: effectiveLineLimit) { _, _ in
             textExpanded = false
             overflowingTextIndexes.removeAll()
         }
-        .onChange(of: translateConfig.showOriginalWithTranslation) { _, _ in
+        .backportOnChange(of: translateConfig.showOriginalWithTranslation) { _, _ in
             textExpanded = false
             overflowingTextIndexes.removeAll()
         }
@@ -616,16 +616,16 @@ private struct CollapsibleRichText: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(maxHeight: collapsedHeight, alignment: .top)
             .clipped()
-            .onChange(of: lineLimit) { _, _ in
+            .backportOnChange(of: lineLimit) { _, _ in
                 publishOverflow(fullHeight: fullHeight, lineHeight: lineHeight)
             }
-            .onChange(of: collapseThreshold) { _, _ in
+            .backportOnChange(of: collapseThreshold) { _, _ in
                 publishOverflow(fullHeight: fullHeight, lineHeight: lineHeight)
             }
-            .onChange(of: isExpanded) { _, _ in
+            .backportOnChange(of: isExpanded) { _, _ in
                 publishOverflow(fullHeight: fullHeight, lineHeight: lineHeight)
             }
-            .onChange(of: text.raw) { _, _ in
+            .backportOnChange(of: text.raw) { _, _ in
                 publishOverflow(fullHeight: fullHeight, lineHeight: lineHeight)
             }
     }

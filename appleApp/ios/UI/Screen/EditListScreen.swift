@@ -3,6 +3,7 @@ import FlareAppleUI
 @preconcurrency import KotlinSharedUI
 import PhotosUI
 import FlareAppleCore
+import NavigationBackport
 
 struct EditListScreen: View {
     @Environment(\.dismiss) var dismiss
@@ -52,7 +53,7 @@ struct EditListScreen: View {
                                 }
                             }
                         }
-                        .onChange(of: avatar) { oldItem, newItem in
+                        .backportOnChange(of: avatar) { oldItem, newItem in
                               Task {
                                   if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                       if let uiImage = UIImage(data: data) {
@@ -128,7 +129,7 @@ struct EditListScreen: View {
         })
         .navigationTitle("edit_list_title")
         .sheet(isPresented: $showEditMember, content: {
-            NavigationStack {
+            NBNavigationStack {
                 EditListMemberScreen(accountType: accountType, listId: listId)
             }
         })

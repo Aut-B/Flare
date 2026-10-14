@@ -1,6 +1,7 @@
 import SwiftUI
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 public struct AllFeedScreen<Destination: Hashable>: View {
     @State private var presenter: KotlinPresenter<BlueskyFeedsWithTabsPresenterState>
@@ -20,7 +21,7 @@ public struct AllFeedScreen<Destination: Hashable>: View {
         List {
             Section {
                 PagingView(data: presenter.state.myFeeds) { item in
-                    NavigationLink(
+                    NBNavigationLink(
                         value: timelineDestination(presenter.state.timelineTabItem(item: item))
                     ) {
                         UiListView(data: item)
@@ -35,7 +36,7 @@ public struct AllFeedScreen<Destination: Hashable>: View {
             Section {
                 PagingView(data: presenter.state.popularFeeds) { pair in
                     if let item = pair.first {
-                        NavigationLink(
+                        NBNavigationLink(
                             value: timelineDestination(presenter.state.timelineTabItem(item: item))
                         ) {
                             UiListView(data: item)

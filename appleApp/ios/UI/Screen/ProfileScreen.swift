@@ -4,8 +4,7 @@ import SwiftUIBackports
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
 import Combine
-import Observation
-
+import Perception
 struct ProfileScreen: View {
     @Environment(\.timelineAccountID) private var accountID
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -39,7 +38,7 @@ struct ProfileScreen: View {
             for: .navigationBar
         )
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: isBlockedProfile) { _, isBlocked in
+        .backportOnChange(of: isBlockedProfile) { _, isBlocked in
             if !isBlocked {
                 showBlockedProfileContent = false
             }
@@ -413,7 +412,7 @@ private struct TimelineUIKitPlaceholderCard: UIViewRepresentable {
     }
 }
 
-@Observable
+@Perceptible
 private final class ProfileTabSelectionProgress {
     private(set) var pagePosition: CGFloat = 0
 

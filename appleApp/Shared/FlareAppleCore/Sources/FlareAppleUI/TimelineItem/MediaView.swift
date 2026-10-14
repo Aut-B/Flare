@@ -137,12 +137,12 @@ public struct MediaVideoView: View {
                 registerPlayer()
                 updateCandidate()
             }
-            .onChange(of: canAutoplay) { _, _ in updateCandidate() }
-            .onChange(of: scenePhase) { _, phase in
+            .backportOnChange(of: canAutoplay) { _, _ in updateCandidate() }
+            .backportOnChange(of: scenePhase) { _, phase in
                 if timelinePlayback == nil { fallbackPlayback.setSuspended(phase != .active) }
             }
-            .onChange(of: carouselItem) { _, _ in updateCandidate() }
-            .onChange(of: data.url) { _, _ in
+            .backportOnChange(of: carouselItem) { _, _ in updateCandidate() }
+            .backportOnChange(of: data.url) { _, _ in
                 playback.remove(id: id)
                 player.detach()
                 ugoira.detach()

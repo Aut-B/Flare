@@ -45,7 +45,7 @@ public struct ArticleScreen: View {
                 onDownloadFile: onDownloadFile
             )
         } errorContent: { error in
-            ContentUnavailableView {
+            BackportContentUnavailableView {
                 Label {
                     Text("Failed to load article", bundle: FlareAppleUILocalization.bundle)
                 } icon: {

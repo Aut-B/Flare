@@ -1,11 +1,11 @@
 import Foundation
 import Network
-import Observation
+import Perception
 import SwiftUI
 import FlareAppleUI
 
 @MainActor
-@Observable
+@Perceptible
 final class NetworkMonitor {
     private(set) var kind: NetworkKind = .cellular
 

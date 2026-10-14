@@ -5,7 +5,7 @@ struct TimelineScrollPhaseModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         if #available(iOS 18.0, macOS 15.0, *) {
-            content.onScrollPhaseChange { _, phase in onChange(phase != .idle) }
+            content.onScrollPhaseChange { _, phase in backportOnChange(phase != .idle) }
         } else {
             content
         }

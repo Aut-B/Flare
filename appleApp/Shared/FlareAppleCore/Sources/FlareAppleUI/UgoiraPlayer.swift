@@ -3,8 +3,9 @@ import FlareAppleCore
 import ImageIO
 @preconcurrency import KotlinSharedUI
 import SwiftUI
+import Perception
 
-@Observable @MainActor
+@Perceptible @MainActor
 public final class UgoiraPlaybackSession {
     public private(set) var image: CGImage?
     public var progress: Double { Double(presenter?.state.progress ?? 0) }
@@ -174,8 +175,8 @@ public struct UgoiraPlayer: View {
             }
             updatePlayback()
         }
-        .onChange(of: active) { _, _ in updatePlayback() }
-        .onChange(of: scenePhase) { _, phase in
+        .backportOnChange(of: active) { _, _ in updatePlayback() }
+        .backportOnChange(of: scenePhase) { _, phase in
             if presentation == nil { fallbackPresentation.setSuspended(phase != .active) }
         }
         .onDisappear {

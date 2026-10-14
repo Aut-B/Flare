@@ -51,7 +51,7 @@ struct StatusMediaView: View {
     var body: some View {
         mediaContent
         .onAppear { registerMediaSelection() }
-        .onChange(of: data.map(\.url)) { _, _ in registerMediaSelection() }
+        .backportOnChange(of: data.map(\.url)) { _, _ in registerMediaSelection() }
         .onDisappear { playback?.mediaSelections.remove(id: carouselID) }
         .blur(radius: isBlur ? 20 : 0)
         .overlay(
@@ -103,11 +103,11 @@ struct StatusMediaView: View {
         .if(!usesCarousel) { view in
             view.clipShape(.rect(cornerRadius: cornerRadius))
         }
-        .onChange(of: usesCarousel) { _, _ in
+        .backportOnChange(of: usesCarousel) { _, _ in
             activeCarouselIndex = nil
             carouselOffset = nil
         }
-        .onChange(of: data.count) { _, count in
+        .backportOnChange(of: data.count) { _, count in
             if let activeCarouselIndex, activeCarouselIndex >= count {
                 self.activeCarouselIndex = nil
             }
@@ -190,7 +190,7 @@ struct StatusMediaView: View {
                         .padding(.trailing, carouselTrailingPadding)
                     }
                     .scrollIndicators(.hidden)
-                    .scrollPosition(id: $activeCarouselIndex, anchor: .center)
+                    .backportScrollPosition(id: $activeCarouselIndex, anchor: .center)
                     .modifier(TimelineScrollPhaseModifier { scrolling in
                         playback?.setScrolling(scrolling, source: carouselID, vertical: false)
                     })

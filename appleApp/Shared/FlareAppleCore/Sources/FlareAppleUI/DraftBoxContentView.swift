@@ -33,7 +33,7 @@ public struct DraftBoxContentView: View {
     public var body: some View {
         Group {
             if presenter.state.items.isEmpty {
-                ContentUnavailableView {
+                BackportContentUnavailableView {
                     Label {
                         Text("No Drafts", bundle: FlareAppleUILocalization.bundle)
                     } icon: {

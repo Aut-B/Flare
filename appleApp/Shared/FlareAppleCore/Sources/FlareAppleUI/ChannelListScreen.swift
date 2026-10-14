@@ -1,6 +1,7 @@
 import SwiftUI
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 public struct ChannelListScreen<Destination: Hashable>: View {
     @State private var presenter: KotlinPresenter<MisskeyChannelListPresenterState>
@@ -20,7 +21,7 @@ public struct ChannelListScreen<Destination: Hashable>: View {
     public var body: some View {
         List {
             PagingView(data: presenter.state.data) { item in
-                 NavigationLink(value: timelineDestination(presenter.state.timelineTabItem(item: item))) {
+                 NBNavigationLink(value: timelineDestination(presenter.state.timelineTabItem(item: item))) {
                      UiListView(data: item)
                          .contextMenu {
                              if case .channel(let data) = onEnum(of: item) {
@@ -91,7 +92,7 @@ public struct ChannelListScreen<Destination: Hashable>: View {
         .refreshable {
              try? await presenter.state.refreshSuspend()
         }
-        .onChange(of: selectedTab, { oldValue, newValue in
+        .backportOnChange(of: selectedTab, { oldValue, newValue in
             presenter.state.setType(data: newValue)
         })
         .navigationTitle(Text("channels_title", bundle: FlareAppleUILocalization.bundle))

@@ -1,8 +1,9 @@
 import FlareAppleCore
 @preconcurrency import KotlinSharedUI
 import SwiftUI
+import Perception
 
-@Observable
+@Perceptible
 public final class ComposePollViewModel {
     public static let minimumChoiceCount = 2
     public static let defaultMaxChoiceCount = 4
@@ -77,7 +78,7 @@ public final class ComposePollViewModel {
     }
 }
 
-@Observable
+@Perceptible
 public final class ComposePollChoice: Identifiable {
     public let id = UUID()
     public var text = ""
@@ -171,7 +172,7 @@ public enum ComposePollExpiration: String, CaseIterable, Hashable, Identifiable 
 }
 
 public struct ComposePollSection: View {
-    @Bindable private var viewModel: ComposePollViewModel
+    @Perception.Bindable private var viewModel: ComposePollViewModel
     private let maxChoices: Int
 
     public init(

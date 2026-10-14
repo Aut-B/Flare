@@ -3,6 +3,7 @@ import FlareAppleUI
 import SwiftUIBackports
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 struct DMListScreen: View {
     let accountType: AccountType
@@ -10,7 +11,7 @@ struct DMListScreen: View {
     var body: some View {
         List {
             PagingView(data: presenter.state.items) { item in
-                NavigationLink(value: Route.dmConversation(accountType, item.key, item.users.count == 1 ? item.users.first?.name.innerText ?? String(localized: "direct_messages_title") : String(localized: "direct_messages_title"))) {
+                NBNavigationLink(value: Route.dmConversation(accountType, item.key, item.users.count == 1 ? item.users.first?.name.innerText ?? String(localized: "direct_messages_title") : String(localized: "direct_messages_title"))) {
                     HStack {
                         if item.hasUser, let image = item.users.first?.avatar {
                             AvatarView(data: image.url, customHeader: image.customHeaders)

@@ -1,4 +1,5 @@
 import SwiftUI
+import Perception
 import KotlinSharedUI
 import FlareAppleCore
 import FlareAppleUI
@@ -23,13 +24,16 @@ struct FlareApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            FlareTheme {
-                root
-            }
-            .modifier(IOSTimelineListEnvironment())
-        .ugoiraExportStatus()
-            .onChange(of: scenePhase) { _, phase in
-                MediaCacheMaintenance.handleScenePhase(phase)
+            // iOS 15 没有 Observation 框架，必须在根部建立 perception 追踪作用域。
+            WithPerceptionTracking {
+                FlareTheme {
+                    root
+                }
+                .modifier(IOSTimelineListEnvironment())
+                .ugoiraExportStatus()
+                .backportOnChange(of: scenePhase) { _, phase in
+                    MediaCacheMaintenance.handleScenePhase(phase)
+                }
             }
         }
     }

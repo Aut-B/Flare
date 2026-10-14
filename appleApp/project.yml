@@ -92,6 +92,14 @@ packages:
   VideoPlayer:
     url: https://github.com/wxxsw/VideoPlayer
     exactVersion: 1.2.5
+  # iOS 15 回退：替代 iOS 17 的 Observation 框架（@Observable/@Bindable）。
+  Perception:
+    url: https://github.com/pointfreeco/swift-perception
+    exactVersion: 2.0.12
+  # iOS 15 回退：替代 iOS 16 的 NavigationStack / NavigationLink(value:) / navigationDestination。
+  NavigationBackport:
+    url: https://github.com/johnpatrickmorgan/NavigationBackport
+    exactVersion: 0.11.6
 
 targetTemplates:
   FirebaseOptionalApp:
@@ -181,6 +189,8 @@ targets:
         copy:
           destination: resources
         destinationFilters: [iOS]
+      - package: Perception
+      - package: NavigationBackport
       - target: OpenInFlare
     preBuildScripts:
       - name: Compile Kotlin
@@ -418,6 +428,9 @@ targets:
       - path: Shared/FlareAppleCore/Sources/FlareAppleCore
         excludes:
           - Resources/**
+    dependencies:
+      - package: Perception
+        link: false
     preBuildScripts:
       - name: Compile Kotlin
         basedOnDependencyAnalysis: false
@@ -460,6 +473,10 @@ targets:
         destinationFilters: [iOS]
         link: false
       - package: Textual
+        link: false
+      - package: Perception
+        link: false
+      - package: NavigationBackport
         link: false
       - target: FlareAppleCore
     preBuildScripts:

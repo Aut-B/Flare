@@ -73,7 +73,7 @@ struct NotificationScreen: View {
                     .onAppear {
                         filterSegmentsHeight = proxy.size.height
                     }
-                    .onChange(of: proxy.size.height) { height in
+                    .backportOnChange(of: proxy.size.height) { height in
                         filterSegmentsHeight = height
                     }
             }
@@ -133,23 +133,23 @@ struct NotificationScreen: View {
                 syncSelectedAccountFromPresenter()
                 syncSelectedFilterFromPresenter()
             }
-            .onChange(of: presenterSelectedAccountStableKey) { _ in
+            .backportOnChange(of: presenterSelectedAccountStableKey) { _ in
                 syncSelectedAccountFromPresenter()
                 syncSelectedFilterFromPresenter()
             }
-            .onChange(of: notificationItemsSignature) { _ in
+            .backportOnChange(of: notificationItemsSignature) { _ in
                 syncSelectedAccountFromPresenter()
             }
-            .onChange(of: selectedAccountStableKey) { _ in
+            .backportOnChange(of: selectedAccountStableKey) { _ in
                 syncSelectedAccountToPresenter()
             }
-            .onChange(of: presenterSelectedFilterStableKey) { _ in
+            .backportOnChange(of: presenterSelectedFilterStableKey) { _ in
                 syncSelectedFilterFromPresenter()
             }
-            .onChange(of: supportedFiltersSignature) { _ in
+            .backportOnChange(of: supportedFiltersSignature) { _ in
                 syncSelectedFilterFromPresenter()
             }
-            .onChange(of: selectedFilter?.stableKey) { _ in
+            .backportOnChange(of: selectedFilter?.stableKey) { _ in
                 syncSelectedFilterToPresenter()
             }
     }

@@ -9,13 +9,13 @@ struct IPadCompactTabBarModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .introspect(.tabView, on: .iOS(.v18, .v26, .v27)) { controller in
+            .introspect(.tabView, on: .iOS(.v17)) { controller in
                 guard controller.traitCollection.userInterfaceIdiom == .pad else { return }
 
                 tabController.value = controller
                 updateCompactTabs(controller)
             }
-            .onChange(of: primaryTabIDs) {
+            .backportOnChange(of: primaryTabIDs) {
                 // SwiftUI may replace the tabs later in the current view update.
                 DispatchQueue.main.async {
                     guard let controller = tabController.value else { return }

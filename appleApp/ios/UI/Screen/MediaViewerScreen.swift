@@ -192,15 +192,15 @@ struct MediaViewerScreen: View {
             applyInitialSelectionIfNeeded()
             postSheetPresented = shouldShowPostSheet
         }
-        .onChange(of: mediaSignature) { _, _ in
+        .backportOnChange(of: mediaSignature) { _, _ in
             applyInitialSelectionIfNeeded()
         }
-        .onChange(of: selectedIndex) { _, _ in
+        .backportOnChange(of: selectedIndex) { _, _ in
             isPlaying = true
             videoState = .idle
             playbackRate = 1
         }
-        .onChange(of: isLandscapeViewing) { _, newValue in
+        .backportOnChange(of: isLandscapeViewing) { _, newValue in
             MediaOrientationController.setLandscape(newValue)
         }
         .onDisappear {
@@ -208,7 +208,7 @@ struct MediaViewerScreen: View {
                 MediaOrientationController.setLandscape(false)
             }
         }
-        .onChange(of: shouldShowPostSheet) { _, visible in
+        .backportOnChange(of: shouldShowPostSheet) { _, visible in
             collapsePost()
             postSheetPresented = visible
         }

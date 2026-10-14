@@ -6,6 +6,7 @@ import Kingfisher
 import KotlinSharedUI
 import LazyPager
 import SwiftUI
+import NavigationBackport
 
 /// Offline fixtures exercise the real viewer, including its nested system sheet.
 struct MediaViewerTestFixture: View {
@@ -31,7 +32,7 @@ struct MediaViewerTestFixture: View {
             medias = items
         }
         .fullScreenCover(isPresented: $presented, onDismiss: { dismissed = true }) {
-            NavigationStack {
+            NBNavigationStack {
                 if !medias.isEmpty {
                     MediaViewerScreen(
                         medias: medias, initialIndex: 0, preview: nil,

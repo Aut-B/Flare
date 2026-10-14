@@ -3,6 +3,7 @@ import FlareAppleUI
 import KotlinSharedUI
 import SwiftUIBackports
 import FlareAppleCore
+import NavigationBackport
 
 struct GroupConfigScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -110,7 +111,7 @@ struct GroupConfigScreen: View {
         }
         .navigationTitle(item == nil ? "tab_settings_add_group" : "tab_settings_edit_group")
         .sheet(isPresented: $showAddTabSheet) {
-            NavigationStack {
+            NBNavigationStack {
                 AddTabSheet(
                     selectedTabs: tabs,
                     filterIsTimeline: true,
@@ -126,7 +127,7 @@ struct GroupConfigScreen: View {
             }
         }
         .sheet(isPresented: $showFilterSheet) {
-            NavigationStack {
+            NBNavigationStack {
                 TimelineFilterSheet(
                     initialFilterConfig: filterConfig,
                     onCancel: {
@@ -146,7 +147,7 @@ struct GroupConfigScreen: View {
                 editItem = nil
             }
         })) {
-            NavigationStack {
+            NBNavigationStack {
                 if let item = editItem {
                     EditTabSheet(onConfirm: { updated in
                         if let index = tabs.firstIndex(where: { $0.id == updated.id }) {

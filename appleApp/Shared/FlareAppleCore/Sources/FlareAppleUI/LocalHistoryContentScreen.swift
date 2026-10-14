@@ -65,7 +65,7 @@ public struct LocalHistoryContentScreen<AskAiOverlay: View>: View {
         .onSubmit(of: .search) {
             submitSearch()
         }
-        .onChange(of: normalizedSearchText) { _, query in
+        .backportOnChange(of: normalizedSearchText) { _, query in
             if listRenderer != nil, query.isEmpty {
                 committedQuery = ""
                 searchPresenter = KotlinPresenter(presenter: LocalCacheSearchPresenter())

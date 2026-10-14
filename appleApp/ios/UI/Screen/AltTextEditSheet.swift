@@ -1,14 +1,16 @@
 import SwiftUI
 import PhotosUI
 import FlareAppleUI
+import Perception
+import NavigationBackport
 
 struct AltTextEditSheet: View {
     @Environment(\.dismiss) var dismiss
-    @Bindable var item: MediaItem
+    @Perception.Bindable var item: MediaItem
     let maxLength: Int
     
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             VStack {
                 if let image = item.image {
                     Image(uiImage: image)
@@ -24,7 +26,7 @@ struct AltTextEditSheet: View {
                     .keyboardType(.twitter)
                     .lineLimit(3...10)
                     .padding()
-                    .onChange(of: item.altText) { oldValue, newValue in
+                    .backportOnChange(of: item.altText) { oldValue, newValue in
                         if newValue.count > maxLength {
                             item.altText = String(newValue.prefix(maxLength))
                         }

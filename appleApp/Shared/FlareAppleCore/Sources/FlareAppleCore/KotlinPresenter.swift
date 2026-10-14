@@ -1,13 +1,15 @@
 @preconcurrency import Combine
 import Foundation
-import Observation
+import Perception
 @preconcurrency import KotlinSharedUI
 
-@Observable
-public final class KotlinPresenter<T: AnyObject> {
-    @ObservationIgnored private var makePresenter: (() -> PresenterBase<T>)?
-    @ObservationIgnored private var storage: Storage?
-    @ObservationIgnored private var subscription: AnyCancellable?
+// iOS 15 回退：不依赖 @Observable/Observation（iOS 17+），改用 Perception 手写追踪。
+// 宏无法为带自定义 getter/setter 的计算属性注入 accessor，故显式持有 registrar。
+public final class KotlinPresenter<T: AnyObject>: Perceptible {
+    private let perceptionRegistrar = PerceptionRegistrar(isPerceptionCheckingEnabled: false)
+    private var makePresenter: (() -> PresenterBase<T>)?
+    private var storage: Storage?
+    private var subscription: AnyCancellable?
 
     public let key = UUID().uuidString
 
@@ -23,12 +25,12 @@ public final class KotlinPresenter<T: AnyObject> {
 
     public var state: T {
         get {
-            access(keyPath: \.state)
+            perceptionRegistrar.access(self, keyPath: \.state)
             return initializedStorage().state
         }
         set {
             let storage = initializedStorage()
-            withMutation(keyPath: \.state) {
+            perceptionRegistrar.withMutation(of: self, keyPath: \.state) {
                 storage.state = newValue
             }
         }

@@ -1,6 +1,7 @@
 import SwiftUI
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 
 public struct AllListScreen<Destination: Hashable>: View {
     @State private var presenter: KotlinPresenter<AllListWithTabsPresenterState>
@@ -28,7 +29,7 @@ public struct AllListScreen<Destination: Hashable>: View {
     public var body: some View {
         List {
             PagingView(data: presenter.state.items) { item in
-                NavigationLink(
+                NBNavigationLink(
                     value: timelineDestination(presenter.state.timelineTabItem(item: item))
                 ) {
                     UiListView(data: item)
@@ -97,7 +98,7 @@ public struct AllListScreen<Destination: Hashable>: View {
             }
         })) {
             if let id = editListId, let editListContent {
-                NavigationStack {
+                NBNavigationStack {
                     editListContent(id)
                 }
             } else {
@@ -128,7 +129,7 @@ public struct AllListScreen<Destination: Hashable>: View {
         })
         .sheet(isPresented: $showCreateListSheet) {
             if let createListContent {
-                NavigationStack {
+                NBNavigationStack {
                     createListContent()
                 }
             } else {

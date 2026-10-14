@@ -7,6 +7,8 @@ import CoreTransferable
 import UniformTypeIdentifiers
 import SwiftUIIntrospect
 import SwiftUIBackports
+import Perception
+import NavigationBackport
 
 final class ComposePrefill: Hashable {
     let id = UUID()
@@ -81,7 +83,7 @@ struct ComposeScreen: View {
                         .scrollContentBackground(.hidden)
                         .textInputAutocapitalization(.sentences)
                         .keyboardType(.twitter)
-                        .introspect(.textEditor, on: .iOS(.v16, .v17, .v18, .v26, .v27)) { textView in
+                        .introspect(.textEditor, on: .iOS(.v16, .v17)) { textView in
                             self.uiTextView = textView
                             applyCursorIfPossible()
                         }
@@ -143,7 +145,7 @@ struct ComposeScreen: View {
         .onAppear {
             applyPrefillIfNeeded()
         }
-        .onChange(of: presenter.state.initialTextState) { _, newValue in
+        .backportOnChange(of: presenter.state.initialTextState) { _, newValue in
             guard !initialTextApplied else { return }
             if case .success(let initialText) = onEnum(of: newValue) {
                 initialTextApplied = true
@@ -161,23 +163,23 @@ struct ComposeScreen: View {
                 mediaViewModel.altTextMaxLength = Int(media.altTextMaxLength)
             }
         }
-        .onChange(of: presenter.state.loadedDraftState) { _, newValue in
+        .backportOnChange(of: presenter.state.loadedDraftState) { _, newValue in
             guard let newValue, case .success(let loadedDraft) = onEnum(of: newValue) else { return }
             applyDraft(loadedDraft.data)
             presenter.state.consumeLoadedDraft()
         }
-        .onChange(of: viewModel.enableContentWarning ? viewModel.contentWarning : nil, initial: true) { _, newValue in
+        .backportOnChange(of: viewModel.enableContentWarning ? viewModel.contentWarning : nil, initial: true) { _, newValue in
             presenter.state.setSpoilerText(value: newValue)
         }
-        .onChange(of: viewModel.text) { oldValue, newValue in
+        .backportOnChange(of: viewModel.text) { oldValue, newValue in
             presenter.state.setText(value: newValue)
         }
-        .onChange(of: keyboardFocused) { _, isFocused in
+        .backportOnChange(of: keyboardFocused) { _, isFocused in
             if isFocused {
                 applyCursorIfPossible()
             }
         }
-        .onChange(of: mediaViewModel.items.count) { _, newValue in
+        .backportOnChange(of: mediaViewModel.items.count) { _, newValue in
             presenter.state.setMediaSize(value: Int32(newValue))
         }
         .sheet(isPresented: $showDraftSheet) {
@@ -626,7 +628,7 @@ struct ComposeScreen: View {
     }
 
     private var draftSheet: some View {
-        NavigationStack {
+        NBNavigationStack {
             DraftBoxScreen { groupId in
                 presenter.state.loadDraft(groupId: groupId)
                 showDraftSheet = false
@@ -637,7 +639,7 @@ struct ComposeScreen: View {
 
 }
 
-@Observable
+@Perceptible
 class MediaViewModel {
     var selectedItems: [PhotosPickerItem] = []
     var items: [MediaItem] = []
@@ -684,7 +686,7 @@ private nonisolated struct PickedComposeFile: Transferable {
     }
 }
 
-@Observable
+@Perceptible
 class MediaItem: Equatable, Identifiable {
     static func == (lhs: MediaItem, rhs: MediaItem) -> Bool {
         lhs.id == rhs.id

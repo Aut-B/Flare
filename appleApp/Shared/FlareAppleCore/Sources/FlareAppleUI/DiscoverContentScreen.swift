@@ -84,7 +84,7 @@ public struct DiscoverContentScreen<AskAiOverlay: View>: View {
         .onSubmit(of: .search) {
             commitSearch(searchText)
         }
-        .onChange(of: searchText) {
+        .backportOnChange(of: searchText) {
             if isSearchPresented && searchText.isEmpty {
                 committedSearchText = ""
                 search(query: "")
@@ -94,13 +94,13 @@ public struct DiscoverContentScreen<AskAiOverlay: View>: View {
                 }
             }
         }
-        .onChange(of: presenter.state.selectedAccount?.key) { _, _ in
+        .backportOnChange(of: presenter.state.selectedAccount?.key) { _, _ in
             listScope = UUID().uuidString
             if listRenderer != nil {
                 search(query: committedSearchText)
             }
         }
-        .onChange(of: presenter.state.selectedAccount) { _, newAccount in
+        .backportOnChange(of: presenter.state.selectedAccount) { _, newAccount in
             if listRenderer == nil, let newAccount {
                 searchPresenter.state.setAccount(profile: newAccount)
             }

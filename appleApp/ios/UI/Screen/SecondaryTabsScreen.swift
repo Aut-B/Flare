@@ -2,6 +2,7 @@ import SwiftUI
 import KotlinSharedUI
 import FlareAppleCore
 import FlareAppleUI
+import NavigationBackport
 
 struct SecondaryTabsScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -66,21 +67,21 @@ struct SecondaryTabsScreen: View {
             }
 
             Section {
-                NavigationLink(value: Route.draftBox) {
+                NBNavigationLink(value: Route.draftBox) {
                     Label {
                         Text("Drafts")
                     } icon: {
                         Image(fontAwesome: .penToSquare)
                     }
                 }
-                NavigationLink(value: Route.rssManagement) {
+                NBNavigationLink(value: Route.rssManagement) {
                     Label {
                         Text("settings_rss_management_title")
                     } icon: {
                         Image(fontAwesome: .squareRss)
                     }
                 }
-                NavigationLink(value: Route.localHostory) {
+                NBNavigationLink(value: Route.localHostory) {
                     Label {
                         Text("local_history_title")
                     } icon: {
@@ -88,7 +89,7 @@ struct SecondaryTabsScreen: View {
                     }
                 }
                 if aiAgentEnabledPresenter.state.enabled {
-                    NavigationLink(value: Route.agentHistory) {
+                    NBNavigationLink(value: Route.agentHistory) {
                         Label {
                             Text("agent_history_title")
                         } icon: {
@@ -96,7 +97,7 @@ struct SecondaryTabsScreen: View {
                         }
                     }
                 }
-                NavigationLink(value: Route.settings) {
+                NBNavigationLink(value: Route.settings) {
                     Label {
                         Text("settings_title")
                     } icon: {

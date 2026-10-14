@@ -2,6 +2,7 @@ import SwiftUI
 import FlareAppleUI
 import KotlinSharedUI
 import FlareAppleCore
+import NavigationBackport
 struct TabSettingsScreen: View {
     @State private var presenter = KotlinPresenter(presenter: HomeTabSettingsPresenter())
     @Environment(\.dismiss) private var dismiss
@@ -22,7 +23,7 @@ struct TabSettingsScreen: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
-                    .onChange(of: enableMixedTimeline) { _, value in
+                    .backportOnChange(of: enableMixedTimeline) { _, value in
                         tabItems = withSystemHomeMixedTimelineEnabled(tabItems, enabled: value)
                     }
                     if enableMixedTimeline {
@@ -97,7 +98,7 @@ struct TabSettingsScreen: View {
                 .onMove(perform: move)
             }
         }
-        .onChange(of: presenter.state.homeTimelineTabs) { oldValue, newValue in
+        .backportOnChange(of: presenter.state.homeTimelineTabs) { oldValue, newValue in
             if !loadedTabs, case .success(let tabs) = onEnum(of: newValue) {
                 tabItems = tabs.data.cast(UiTimelineTabItem.self)
                 enableMixedTimeline = tabItems.contains { isSystemHomeMixedTimeline($0) }
@@ -144,7 +145,7 @@ struct TabSettingsScreen: View {
             }
         }
         .sheet(isPresented: $showAddTabSheet) {
-            NavigationStack {
+            NBNavigationStack {
                 AddTabSheet(
                     selectedTabs: tabItems,
                     filterIsTimeline: true,
@@ -169,7 +170,7 @@ struct TabSettingsScreen: View {
                 editGroup = nil
             }
         })) {
-            NavigationStack {
+            NBNavigationStack {
                 if let item = editGroup {
                     GroupConfigScreen(item: item) { updated in
                         upsertGroup(initialItem: item, updatedItem: updated)
@@ -178,7 +179,7 @@ struct TabSettingsScreen: View {
             }
         }
         .sheet(isPresented: $showCreateGroup) {
-            NavigationStack {
+            NBNavigationStack {
                 GroupConfigScreen(item: nil) { updated in
                     upsertGroup(initialItem: nil, updatedItem: updated)
                 }
@@ -191,7 +192,7 @@ struct TabSettingsScreen: View {
                 editItem = nil
             }
         })) {
-            NavigationStack {
+            NBNavigationStack {
                 if let item = editItem {
                     EditTabSheet(onConfirm: { updated in
                         if let index = tabItems.firstIndex(where: { $0.id == updated.id }) {
@@ -310,7 +311,7 @@ struct EditTabSheet: View {
             )
         }
         .sheet(isPresented: $showFilterSheet) {
-            NavigationStack {
+            NBNavigationStack {
                 TimelineFilterSheet(
                     initialFilterConfig: filterConfig,
                     onCancel: {
@@ -440,14 +441,14 @@ struct AddTabSheet: View {
             }
         }
         .sheet(isPresented: $showAddRssSource) {
-            NavigationStack {
+            NBNavigationStack {
                 EditRssSheet(id: nil, onImportOPML: { url in
                     importOpmlUrl = url
                 })
             }
         }
         .sheet(item: $importOpmlUrl) { url in
-            NavigationStack {
+            NBNavigationStack {
                 ImportOPMLScreen(url: url)
             }
         }

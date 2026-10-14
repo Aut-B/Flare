@@ -1,7 +1,8 @@
-import Observation
+import Perception
 import FlareAppleCore
 import KotlinSharedUI
 import SwiftUI
+import NavigationBackport
 
 public struct TranslationConfigSettingsView: View {
     @State private var state = TranslationConfigSettingsState()
@@ -27,7 +28,7 @@ public struct TranslationConfigSettingsSections: View {
     }
 }
 
-@Observable
+@Perceptible
 private final class TranslationConfigSettingsState {
     let presenter = KotlinPresenter(presenter: AiConfigPresenter())
     let aiTranslationTestPresenter = KotlinPresenter(presenter: AiTranslationTestPresenter())
@@ -309,11 +310,11 @@ private struct TranslationConfigSettingsSectionsContent: View {
 }
 
 private struct TranslationConfigEditSheet: View {
-    @Bindable var state: TranslationConfigSettingsState
+    @Perception.Bindable var state: TranslationConfigSettingsState
     let field: TranslationConfigEditableField
 
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             Form {
                 Section {
                     TextEditor(text: $state.editingText)
@@ -346,10 +347,10 @@ private struct TranslationConfigEditSheet: View {
 }
 
 private struct TranslationExcludedLanguagesSheet: View {
-    @Bindable var state: TranslationConfigSettingsState
+    @Perception.Bindable var state: TranslationConfigSettingsState
 
     var body: some View {
-        NavigationStack {
+        NBNavigationStack {
             languageList
             #if os(iOS)
             .environment(\.editMode, .constant(.active))
@@ -427,7 +428,7 @@ private struct TranslationExcludedLanguagesSheet: View {
 
 private extension View {
     func translationConfigSettingsSheets(state: TranslationConfigSettingsState) -> some View {
-        @Bindable var state = state
+        @Perception.Bindable var state = state
         return sheet(item: $state.editingField) { field in
             TranslationConfigEditSheet(state: state, field: field)
         }

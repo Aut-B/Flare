@@ -7,6 +7,7 @@ import VideoPlayer
 import Drops
 import WebKit
 import FlareAppleCore
+import NavigationBackport
 
 struct StorageScreen: View {
     private let storagePresenter: StoragePresenter
@@ -103,7 +104,7 @@ struct StorageScreen: View {
                     }
                 }
                 
-                NavigationLink(value: Route.appLog) {
+                NBNavigationLink(value: Route.appLog) {
                     Label {
                         Text("app_log")
                     } icon: {

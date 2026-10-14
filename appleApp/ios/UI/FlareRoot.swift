@@ -6,6 +6,7 @@ import FlareAppleCore
 import SwiftUIBackports
 import SwiftUIIntrospect
 import UIKit
+import NavigationBackport
 
 extension Notification.Name {
     static let tabDoubleTapped = Notification.Name("tabDoubleTapped")
@@ -82,7 +83,7 @@ struct FlareRoot: View {
             .tabBarMinimizeBehavior(.onScrollDown)
             .background(Color(.systemGroupedBackground))
             .sheet(item: $reloginRoute) { route in
-                NavigationStack {
+                NBNavigationStack {
                     route.view(
                         onNavigate: { reloginRoute = $0 },
                         goBack: { reloginRoute = nil }
@@ -171,7 +172,7 @@ struct BackportFlareRoot: View {
             })
             .background(Color(.systemGroupedBackground))
             .sheet(item: $reloginRoute) { route in
-                NavigationStack {
+                NBNavigationStack {
                     route.view(
                         onNavigate: { reloginRoute = $0 },
                         goBack: { reloginRoute = nil }
@@ -227,7 +228,7 @@ private struct TabBarDoubleTapModifier: ViewModifier {
     let action: () -> Void
 
     func body(content: Content) -> some View {
-        content.introspect(.tabView, on: .iOS(.v17, .v18, .v26, .v27)) { tabBarController in
+        content.introspect(.tabView, on: .iOS(.v17)) { tabBarController in
             target.install(on: tabBarController.tabBar, action: action)
         }
     }

@@ -74,7 +74,7 @@ public struct SearchScreen: View {
             commitSearch(searchText)
         }
         .detectScrolling()
-        .onChange(of: searchText) {
+        .backportOnChange(of: searchText) {
             if isSearchPresented && searchText.isEmpty {
                 committedSearchText = ""
                 search(query: "")

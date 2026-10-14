@@ -3,6 +3,7 @@ import CoreGraphics
 import ImageIO
 @preconcurrency import KotlinSharedUI
 import SwiftUI
+import Perception
 
 nonisolated struct UgoiraExportFrame: Sendable {
     let path: String
@@ -110,7 +111,7 @@ nonisolated enum UgoiraEncoder {
 }
 
 /// Jobs outlive individual screens; only complete files reach Photos or the save dialog.
-@Observable @MainActor
+@Perceptible @MainActor
 public final class UgoiraExporter {
     public static let shared = UgoiraExporter()
     public private(set) var progress: Double?

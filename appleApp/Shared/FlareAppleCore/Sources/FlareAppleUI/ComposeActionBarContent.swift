@@ -1,6 +1,7 @@
 import FlareAppleCore
 @preconcurrency import KotlinSharedUI
 import SwiftUI
+import NavigationBackport
 
 public struct ComposeActionBarContent<MediaControl: View>: View {
     private let isPollEnabled: Bool
@@ -204,7 +205,7 @@ public struct ComposeEmojiButton: View {
                 }
             }
             .popover(isPresented: isPresented, arrowEdge: .bottom) {
-                NavigationStack {
+                NBNavigationStack {
                     EmojiPopup(data: emojis, onItemClicked: onSelect)
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {

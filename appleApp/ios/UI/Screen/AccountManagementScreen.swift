@@ -2,6 +2,7 @@ import SwiftUI
 import KotlinSharedUI
 import FlareAppleCore
 import FlareAppleUI
+import NavigationBackport
 
 struct AccountManagementScreen: View {
     @State private var presenter = KotlinPresenter(presenter: AccountManagementPresenter())
@@ -47,7 +48,7 @@ struct AccountManagementScreen: View {
         .onSuccessOf(of: presenter.state.accounts) { data in
             tabItems = data.cast(AccountsStateAccountItem.self)
         }
-        .onChange(of: tabItems, { oldValue, newValue in
+        .backportOnChange(of: tabItems, { oldValue, newValue in
             presenter.state.setOrder(value: newValue.map { item in item.account.accountKey })
         })
         .alert("logout_title", isPresented: Binding(get: {
@@ -72,7 +73,7 @@ struct AccountManagementScreen: View {
         .navigationTitle("account_management_title")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink(value: Route.serviceSelect) {
+                NBNavigationLink(value: Route.serviceSelect) {
                     Label {
                         Text("login_title")
                     } icon: {
@@ -100,7 +101,7 @@ struct AccountManagementScreen: View {
     @ViewBuilder
     private func accountActionButtons(for account: UiAccount, accountName: String?) -> some View {
         if account.supportsRelayManagement {
-            NavigationLink(value: Route.nostrRelays(account.accountKey)) {
+            NBNavigationLink(value: Route.nostrRelays(account.accountKey)) {
                 Label {
                     Text("Manage relays")
                 } icon: {
