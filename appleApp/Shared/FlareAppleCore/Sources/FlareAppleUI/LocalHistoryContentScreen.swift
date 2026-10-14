@@ -54,7 +54,7 @@ public struct LocalHistoryContentScreen<AskAiOverlay: View>: View {
         .detectScrolling()
         .background(Color.flareSystemGroupedBackground)
         .navigationTitle(Text("local_history_title", bundle: .main))
-        .searchable(
+        .flareSearchable(
             text: $searchText,
             isPresented: $isSearchPresented,
             prompt: Text("local_history_search_prompt", bundle: .main)
