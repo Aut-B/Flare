@@ -383,7 +383,7 @@ public struct TimelineGalleryItemView: View {
     private var placeholderTile: some View {
         VStack(alignment: .leading, spacing: 0) {
             Rectangle()
-                .fill(.placeholder)
+                .fill(.flarePlaceholder)
                 .aspectRatio(placeholderVariant.isMultiple(of: 2) ? 0.75 : 1.2, contentMode: .fit)
             UserLoadingView()
                 .padding(.horizontal, 8)
