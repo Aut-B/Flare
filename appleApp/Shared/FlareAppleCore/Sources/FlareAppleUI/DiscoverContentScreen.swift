@@ -67,8 +67,8 @@ public struct DiscoverContentScreen<AskAiOverlay: View>: View {
             macAccountToolbarItem
             #endif
         }
-        .searchable(text: $searchText, isPresented: $isSearchPresented)
-        .searchSuggestions {
+        .flareSearchable(text: $searchText, isPresented: $isSearchPresented)
+        .flareSearchSuggestions {
             SearchHistorySuggestions(
                 state: searchHistoryPresenter.state,
                 searchText: searchText,
