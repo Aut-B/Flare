@@ -84,7 +84,7 @@ public final class UgoiraPlaybackSession {
                     let end = Double(animation.frameStartMillis(index: Int32(index)) + Int64(frames[index].delayMillis)) / 1000
                     let now = ProcessInfo.processInfo.systemUptime - start
                     let delay = ugoiraFrameDelay(frameEnd: end, duration: duration, selectedAt: elapsed, now: now)
-                    try await Task.sleep(for: .seconds(delay))
+                    try await Task.sleep(nanoseconds: delay * 1_000_000_000)
                 }
             } catch is CancellationError {
             } catch {
