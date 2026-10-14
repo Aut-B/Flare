@@ -110,23 +110,20 @@ struct NotificationScreen: View {
                     }
             }
             .toolbar {
+            // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件搬进 ToolbarItem 内部
+            ToolbarItem {
                 if notificationItems.count > 1 {
-                    ToolbarItem {
-                        NotificationAccountsMenu(
-                            items: notificationItems,
-                            selectedStableKey: $selectedAccountStableKey
-                        )
-                    }
-                    if horizontalSizeClass == .regular && !isSyncingAccountSelection {
-                        if #available(iOS 26.0, *) {
-                            ToolbarSpacer()
-                        }
-                        ToolbarItem {
-                            filterSegments
-                        }
-                    }
-
+                    NotificationAccountsMenu(
+                        items: notificationItems,
+                        selectedStableKey: $selectedAccountStableKey
+                    )
                 }
+            }
+            ToolbarItem {
+                if notificationItems.count > 1, horizontalSizeClass == .regular, !isSyncingAccountSelection {
+                    filterSegments
+                }
+            }
             }
             .onAppear {
                 syncSelectedAccountFromPresenter()
