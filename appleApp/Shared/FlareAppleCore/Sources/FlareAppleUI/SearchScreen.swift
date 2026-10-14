@@ -73,7 +73,7 @@ public struct SearchScreen: View {
             commitSearch(searchText)
         }
         .detectScrolling()
-        .backportOnChange(of: searchText) {
+        .backportOnChange(of: searchText) { _ in
             if isSearchPresented && searchText.isEmpty {
                 committedSearchText = ""
                 search(query: "")
@@ -188,10 +188,11 @@ public struct SearchScreen: View {
     #if os(iOS)
     @ToolbarContentBuilder
     private var accountToolbarItem: some ToolbarContent {
-        if case .success(let data) = onEnum(of: searchPresenter.state.accounts) {
-            let accounts = data.data
-            if accounts.count > 1 {
-                ToolbarItem(placement: .primaryAction) {
+        // iOS 15 的 ToolbarContentBuilder 没有 buildIf：条件搬进 ToolbarItem 内部
+        ToolbarItem(placement: .primaryAction) {
+            if case .success(let data) = onEnum(of: searchPresenter.state.accounts) {
+                let accounts = data.data
+                if accounts.count > 1 {
                     Menu {
                         ForEach(0..<accounts.count, id: \.self) { index in
                             let account = accounts[index] as! UiProfile
