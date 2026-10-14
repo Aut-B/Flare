@@ -94,10 +94,8 @@ private struct EmojiSection: View {
     let key: String
     let onItemClicked: (UiEmoji) -> Void
 
-    @State private var isExpanded = false
-
     var body: some View {
-        Section(isExpanded: $isExpanded) {
+        Section {
             EmojiGrid(items: value, onItemClicked: onItemClicked)
         } header: {
             Text(key)
