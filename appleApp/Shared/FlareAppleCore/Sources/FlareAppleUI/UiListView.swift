@@ -135,7 +135,7 @@ public struct UiListPlaceholder: View {
         ) {
             HStack {
                 Rectangle()
-                    .fill(.placeholder)
+                    .fill(.flarePlaceholder)
                     .frame(width: 24, height: 24)
                     .clipShape(.circle)
                 Text("#loading", bundle: FlareAppleUILocalization.bundle)
