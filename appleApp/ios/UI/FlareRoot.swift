@@ -80,7 +80,6 @@ struct FlareRoot: View {
             })
             .tabViewStyle(.sidebarAdaptable)
             .backport
-            .tabBarMinimizeBehavior(.onScrollDown)
             .background(Color(.systemGroupedBackground))
             .sheet(item: $reloginRoute) { route in
                 NBNavigationStack {

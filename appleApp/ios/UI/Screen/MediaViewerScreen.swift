@@ -42,7 +42,6 @@ struct MediaViewerScreen: View {
     @State private var isLandscapeViewing = false
     @State private var postSheetPresented = false
     @State private var postSummaryHeight: CGFloat = 120
-    @State private var postDetent: PresentationDetent = .height(120)
 
     init(
         medias: [any UiMedia],
@@ -436,7 +435,6 @@ struct MediaViewerScreen: View {
                     content.presentationBackground(postDetent == .large ? .regularMaterial : .ultraThinMaterial)
                 }
             }
-            .presentationDetents([.height(postSummaryHeight), .large], selection: $postDetent)
             .presentationCompactAdaptation(.none)
             .presentationDragIndicator(.visible)
             .presentationContentInteraction(.resizes)
@@ -561,7 +559,7 @@ struct MediaViewerScreen: View {
 
     private func cancelDismissGesture() {
         guard !isDismissing else { return }
-        withAnimation(.spring(response: 0.25, dampingFraction: 0.9)) {
+        withAnimation(.interactiveSpring(response: 0.25, dampingFraction: 0.9)) {
             dismissOffset = 0
             opacity = 1
         }

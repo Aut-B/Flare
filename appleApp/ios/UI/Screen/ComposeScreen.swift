@@ -3,7 +3,6 @@ import KotlinSharedUI
 import FlareAppleCore
 import FlareAppleUI
 import PhotosUI
-import CoreTransferable
 import UniformTypeIdentifiers
 import SwiftUIIntrospect
 import SwiftUIBackports
@@ -294,7 +293,7 @@ struct ComposeScreen: View {
     @ViewBuilder
     private var composeMediaPicker: some View {
         if presenter.state.mediaEnabled {
-            PhotosPicker(
+            BackportPhotosPicker(
                 selection: Binding(get: {
                     mediaViewModel.selectedItems
                 }, set: { value in
@@ -378,7 +377,6 @@ struct ComposeScreen: View {
             .padding(8)
         }
         .frame(minWidth: 280, maxWidth: 340, maxHeight: 420)
-        .presentationDetents([.medium, .large])
     }
 
     private func accountPickerButton(
@@ -634,14 +632,13 @@ struct ComposeScreen: View {
                 showDraftSheet = false
             }
         }
-        .presentationDetents([.medium, .large])
     }
 
 }
 
 @Perceptible
 class MediaViewModel {
-    var selectedItems: [PhotosPickerItem] = []
+    var selectedItems: [BackportPhotosPickerItem] = []
     var items: [MediaItem] = []
     var sensitive = false
     var maxSize = 4
@@ -673,25 +670,12 @@ class MediaViewModel {
     }
 }
 
-private nonisolated struct PickedComposeFile: Transferable {
-    let file: ComposeMediaFile
-
-    static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(importedContentType: .movie) { received in
-            PickedComposeFile(file: try ComposeMediaFile(copying: received.file))
-        }
-        FileRepresentation(importedContentType: .image) { received in
-            PickedComposeFile(file: try ComposeMediaFile(copying: received.file))
-        }
-    }
-}
-
 @Perceptible
 class MediaItem: Equatable, Identifiable {
     static func == (lhs: MediaItem, rhs: MediaItem) -> Bool {
         lhs.id == rhs.id
     }
-    let item: PhotosPickerItem?
+    let item: BackportPhotosPickerItem?
     var image: UIImage?
     var data: Data?
     var file: ComposeMediaFile?
@@ -703,7 +687,7 @@ class MediaItem: Equatable, Identifiable {
     var fileName: String
     var type: FileType = .other
     
-    init(item: PhotosPickerItem) {
+    init(item: BackportPhotosPickerItem) {
         self.item = item
         self.id = item.itemIdentifier ?? UUID().uuidString
         self.fileName = item.itemIdentifier ?? UUID().uuidString
@@ -717,21 +701,23 @@ class MediaItem: Equatable, Identifiable {
         }
         
         self.mimeType = item.supportedContentTypes.first?.preferredMIMEType
-        item.loadTransferable(type: PickedComposeFile.self) { result in
-            DispatchQueue.main.async {
-                do {
-                    guard let picked = try result.get() else {
-                        self.loadError = "Unable to load this media file"
-                        return
-                    }
-                    self.file = picked.file
-                    self.fileName = picked.file.url.lastPathComponent
-                    if self.type == .image {
-                        self.image = UIImage(contentsOfFile: picked.file.url.path)
-                    }
-                } catch {
-                    self.loadError = error.localizedDescription
+                item.loadFile { result in
+            do {
+                guard let url = try result.get() else {
+                    DispatchQueue.main.async { self.loadError = "Unable to load this media file" }
+                    return
                 }
+                // 临时文件仅在该回调内有效，必须同步复制。
+                let file = try ComposeMediaFile(copying: url)
+                DispatchQueue.main.async {
+                    self.file = file
+                    self.fileName = file.url.lastPathComponent
+                    if self.type == .image {
+                        self.image = UIImage(contentsOfFile: file.url.path)
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async { self.loadError = error.localizedDescription }
             }
         }
     }

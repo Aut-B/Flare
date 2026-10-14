@@ -6,7 +6,7 @@ import FlareAppleCore
 struct CreateListScreen: View {
     @Environment(\.dismiss) private var dismiss
     @State private var presenter: KotlinPresenter<CreateListState>
-    @State private var avatar: PhotosPickerItem? = nil
+    @State private var avatar: BackportPhotosPickerItem? = nil
     @State private var listName: String = ""
     @State private var listDescription: String = ""
     @State private var selectedImage: Image?
@@ -21,7 +21,7 @@ struct CreateListScreen: View {
             StateView(state: presenter.state.supportedMetaData) { metadata in
                 if metadata.contains(ListMetaDataType.avatar) {
                     Section("list_edit_avatar") {
-                        PhotosPicker(selection: $avatar, matching: .images) {
+                        BackportPhotosPicker(selection: $avatar, matching: .images) {
                             if let selectedImage {
                                 selectedImage
                                     .resizable()

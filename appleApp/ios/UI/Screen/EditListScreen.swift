@@ -12,7 +12,7 @@ struct EditListScreen: View {
     private let listId: String
     @State private var title: String = ""
     @State private var desc: String = ""
-    @State private var avatar: PhotosPickerItem? = nil
+    @State private var avatar: BackportPhotosPickerItem? = nil
     @State private var selectedImage: Image?
     @State private var isLoading: Bool = false
     @State private var showEditMember: Bool = false
@@ -28,7 +28,7 @@ struct EditListScreen: View {
             StateView(state: presenter.state.supportedMetaData) { supportedMetadata in
                 if supportedMetadata.contains(ListMetaDataType.avatar) {
                     Section {
-                        PhotosPicker(selection: $avatar, matching: .any(of: [.images, .videos, .livePhotos])) {
+                        BackportPhotosPicker(selection: $avatar, matching: .any(of: [.images, .videos, .livePhotos])) {
                             if let selectedImage {
                                 selectedImage
                                     .resizable()

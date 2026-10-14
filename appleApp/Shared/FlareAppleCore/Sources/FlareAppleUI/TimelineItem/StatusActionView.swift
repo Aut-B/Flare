@@ -655,7 +655,7 @@ struct MacStatusShareMenu<LabelContent: View>: View {
             .disabled(crossPost == nil)
 
             if let shareURL = URL(string: data.shareUrl) {
-                ShareLink(item: shareURL) {
+                BackportShareLink(item: shareURL) {
                     Label("share_link", systemImage: "link")
                 }
             }
@@ -668,14 +668,14 @@ struct MacStatusShareMenu<LabelContent: View>: View {
 
             if let fxShareUrl = data.fxShareUrl,
                let fxShareURL = URL(string: fxShareUrl) {
-                ShareLink(item: fxShareURL) {
+                BackportShareLink(item: fxShareURL) {
                     Label("share_via_fxembed", systemImage: "link")
                 }
             }
 
             if let fixvxShareUrl = data.fixvxShareUrl,
                let fixvxShareURL = URL(string: fixvxShareUrl) {
-                ShareLink(item: fixvxShareURL) {
+                BackportShareLink(item: fixvxShareURL) {
                     Label("share_via_fixvx", systemImage: "link")
                 }
             }
@@ -854,7 +854,7 @@ public struct MacStatusShareSheet: View {
                     Spacer()
 
                     if let screenshotURL {
-                        ShareLink(item: screenshotURL) {
+                        BackportShareLink(item: screenshotURL) {
                             Text("done")
                         }
                         .buttonStyle(.borderedProminent)

@@ -57,7 +57,7 @@ struct ProfileScreen: View {
                         ForEach(0..<tabs.count, id: \.self) { index in
                             let tab = tabs[index]
                             Button {
-                                withAnimation(.spring) {
+                                withAnimation(.interactiveSpring()) {
                                     selectedTab = index
                                 }
                             } label: {

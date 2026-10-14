@@ -199,7 +199,7 @@ struct HomeTimelineScreen: View {
                                             }
                                         }
                                         .padding(.horizontal)
-                                        .animation(.spring(response: 0.25, dampingFraction: 0.85), value: selectedTabId)
+                                        .animation(.interactiveSpring(response: 0.25, dampingFraction: 0.85), value: selectedTabId)
                                     }
                                 }
                                 if #available(iOS 26.0, *) {

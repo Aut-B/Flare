@@ -150,7 +150,7 @@ public struct CommonProfileHeader: View {
                                             .multilineTextAlignment(.center)
                                     }
                                 }
-                                .animation(.spring(response: 0.25, dampingFraction: 0.86), value: buttonState.data.id)
+                                .animation(.interactiveSpring(response: 0.25, dampingFraction: 0.86), value: buttonState.data.id)
                             case .loading:
                                 Button(action: {}, label: {
                                     Text("#loading", bundle: FlareAppleUILocalization.bundle)

@@ -75,13 +75,13 @@ struct StatusShareSheet: View {
                     .disabled(image == nil)
 
                     if let url = URL(string: shareUrl) {
-                        ShareLink(item: url) {
+                        BackportShareLink(item: url) {
                             Label("share_link", systemImage: "link")
                         }
                     }
                     
                     if let image {
-                        ShareLink(item: Image(uiImage: image), preview: SharePreview("share_screenshot", image: Image(uiImage: image))) {
+                        BackportShareLink(item: image) {
                             Label("share_screenshot", systemImage: "photo")
                         }
                     }
@@ -93,13 +93,13 @@ struct StatusShareSheet: View {
                     }
                     
                     if let fxShareUrl, let url = URL(string: fxShareUrl) {
-                        ShareLink(item: url) {
+                        BackportShareLink(item: url) {
                             Label("share_via_fxembed", systemImage: "link")
                         }
                     }
                     
                     if let fixvxShareUrl, let url = URL(string: fixvxShareUrl) {
-                        ShareLink(item: url) {
+                        BackportShareLink(item: url) {
                             Label("share_via_fixvx", systemImage: "link")
                         }
                     }

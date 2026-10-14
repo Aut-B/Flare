@@ -51,7 +51,7 @@ public struct ProfileTabBar: View {
                     ForEach(0..<tabs.count, id: \.self) { index in
                         Button {
                             if selectionProgress == nil {
-                                withAnimation(.spring(response: 0.25, dampingFraction: 0.85)) {
+                                withAnimation(.interactiveSpring(response: 0.25, dampingFraction: 0.85)) {
                                     selectedTab = index
                                 }
                             } else {
