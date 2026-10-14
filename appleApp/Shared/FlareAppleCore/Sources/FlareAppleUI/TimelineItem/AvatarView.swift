@@ -13,6 +13,6 @@ public struct AvatarView: View {
 
     public var body: some View {
         NetworkImage(data: data, customHeader: customHeader)
-            .clipShape(avatarShape == .circle ? AnyShape(.circle) : AnyShape(.rect(cornerRadius: 8)))
+            .clipShape(avatarShape == .circle ? FlareAnyShape(Circle()) : FlareAnyShape(RoundedRectangle(cornerRadius: 8, style: .continuous)))
     }
 }
