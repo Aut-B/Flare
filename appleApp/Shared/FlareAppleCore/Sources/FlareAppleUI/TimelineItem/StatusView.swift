@@ -593,22 +593,18 @@ private struct CollapsibleRichText: View {
     var body: some View {
         richText
             .fixedSize(horizontal: false, vertical: true)
-            .onGeometryChange(for: CGFloat.self) { proxy in
-                proxy.size.height
-            } action: { value in
+            .flareOnGeometry({ proxy in proxy.size.height }, action: { value in
                 fullHeight = value
                 publishOverflow(fullHeight: value, lineHeight: lineHeight)
-            }
+            })
             .overlay(alignment: .topLeading) {
                 Text(verbatim: "A")
                     .fixedSize()
                     .hidden()
-                    .onGeometryChange(for: CGFloat.self) { proxy in
-                        proxy.size.height
-                    } action: { value in
+                    .flareOnGeometry({ proxy in proxy.size.height }, action: { value in
                         lineHeight = value
                         publishOverflow(fullHeight: fullHeight, lineHeight: value)
-                    }
+                    })
                     .allowsHitTesting(false)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
