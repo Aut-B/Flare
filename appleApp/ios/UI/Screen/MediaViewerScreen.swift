@@ -406,13 +406,11 @@ struct MediaViewerScreen: View {
                     .padding(.top, 24)
                     .padding(.bottom, 8)
                     .fixedSize(horizontal: false, vertical: true)
-                    .onGeometryChange(for: CGFloat.self) { proxy in
-                        ceil(proxy.size.height)
-                    } action: { height in
+                    .flareOnGeometry({ proxy in ceil(proxy.size.height) }, action: { height in
                         guard height > 0, height != postSummaryHeight else { return }
                         postSummaryHeight = height
                         if postDetent != .large { postDetent = .height(height) }
-                    }
+                    })
                     Spacer(minLength: 0)
                 }
             }
@@ -421,14 +419,14 @@ struct MediaViewerScreen: View {
                 if #available(iOS 26.0, *) {
                     content
                 } else {
-                    content.presentationBackground(postDetent == .large ? .regularMaterial : .ultraThinMaterial)
+                    content.flarePresentationBackgroundMaterial(regular: postDetent == .large)
                 }
             }
-            .presentationCompactAdaptation(.none)
+            .flarePresentationCompactAdaptationNone()
             .presentationDragIndicator(.visible)
-            .presentationContentInteraction(.resizes)
+            .flarePresentationContentInteractionResizes()
             // The viewer supplies the expanded scrim so tapping it collapses, rather than dismisses, the sheet.
-            .presentationBackgroundInteraction(.enabled)
+            .flarePresentationBackgroundInteractionEnabled()
             .preferredColorScheme(.dark)
         }
     }
