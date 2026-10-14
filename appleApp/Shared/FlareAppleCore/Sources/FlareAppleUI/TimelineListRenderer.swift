@@ -88,6 +88,5 @@ struct TimelineListUserStrip: View {
             .padding(.horizontal, 16)
         }
         .frame(height: max(rowHeight, 76))
-        .scrollIndicators(.hidden)
     }
 }

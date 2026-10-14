@@ -3,7 +3,6 @@ import Combine
 import FlareAppleUI
 import KotlinSharedUI
 import FlareAppleCore
-import SwiftUIBackports
 import SwiftUIIntrospect
 import UIKit
 import NavigationBackport
@@ -79,7 +78,6 @@ struct FlareRoot: View {
                 NotificationCenter.default.post(name: .tabDoubleTapped, object: selectedTab)
             })
             .tabViewStyle(.sidebarAdaptable)
-            .backport
             .background(Color(.systemGroupedBackground))
             .sheet(item: $reloginRoute) { route in
                 NBNavigationStack {

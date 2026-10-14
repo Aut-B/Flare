@@ -108,7 +108,7 @@ struct AccountManagementScreen: View {
                     Image(fontAwesome: .list)
                 }
             }
-            .tint(.accentColor)
+            .accentColor(.accentColor)
         }
         Button(role: .destructive) {
             requestLogoutConfirmation(

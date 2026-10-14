@@ -64,7 +64,6 @@ struct NostrRelaysScreen: View {
             TextField("Enter relay URL", text: $relay)
                 .textInputAutocapitalization(.never)
 #if os(iOS)
-                .autocorrectionDisabled()
 #endif
             Button("Cancel", role: .cancel) {
                 relay = ""

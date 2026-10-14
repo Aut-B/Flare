@@ -1,7 +1,6 @@
 import SwiftUI
 import FlareAppleUI
 import KotlinSharedUI
-import SwiftUIBackports
 import FlareAppleCore
 import NavigationBackport
 

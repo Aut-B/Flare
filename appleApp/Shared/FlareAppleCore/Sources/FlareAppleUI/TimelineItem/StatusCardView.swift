@@ -13,7 +13,7 @@ struct StatusCardView: View {
             spacing: 0
         ) {
             if let media = data.media {
-                AdaptiveGrid(singleFollowsImageAspect: false) {
+                AdaptiveGridCompat(singleFollowsImageAspect: false) {
                     Color.clear
                         .overlay {
                             MediaView(data: media)

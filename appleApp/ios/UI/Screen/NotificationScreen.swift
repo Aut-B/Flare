@@ -2,7 +2,6 @@ import SwiftUI
 import Combine
 import UIKit
 import FlareAppleUI
-import SwiftUIBackports
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
 

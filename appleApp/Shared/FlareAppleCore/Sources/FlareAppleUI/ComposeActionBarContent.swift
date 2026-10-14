@@ -118,7 +118,6 @@ public struct ComposeActionBarContent<MediaControl: View>: View {
                 .buttonStyle(.plain)
                 .labelStyle(.iconOnly)
             }
-            .scrollIndicators(.hidden)
 
             Spacer()
 

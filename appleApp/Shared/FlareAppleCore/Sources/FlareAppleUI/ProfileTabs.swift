@@ -82,7 +82,6 @@ public struct ProfileTabBar: View {
                 }
                 .padding(.horizontal, 8)
             }
-            .scrollIndicators(.hidden)
         }
         .frame(maxWidth: .infinity)
         .overlayPreferenceValue(ProfileTabFramePreferenceKey.self) { anchors in
@@ -184,7 +183,6 @@ public struct ProfileTabsLoadingPlaceholder: View {
                 }
                 .padding(.horizontal, 8)
             }
-            .scrollIndicators(.hidden)
         }
         .frame(maxWidth: .infinity)
         .redacted(reason: .placeholder)

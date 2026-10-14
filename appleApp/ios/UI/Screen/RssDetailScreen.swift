@@ -2,7 +2,6 @@ import SwiftUI
 import FlareAppleUI
 import KotlinSharedUI
 import SafariServices
-import SwiftUIBackports
 import WebKit
 import FlareAppleCore
 

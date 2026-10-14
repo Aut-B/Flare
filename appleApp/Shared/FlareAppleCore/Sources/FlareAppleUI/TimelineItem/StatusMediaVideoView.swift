@@ -2,7 +2,6 @@ import SwiftUI
 import KotlinSharedUI
 import AVFoundation
 import Combine
-import SwiftUIBackports
 import FlareAppleCore
 
 #if os(iOS)
@@ -70,7 +69,6 @@ public struct VideoControlView: View {
                     Image(fontAwesome: isPlaying ? .pause : .play)
                         .font(.title2)
                         .frame(height: 24)
-                        .contentTransition(.symbolEffect(.replace))
                 }
                 .contentShape(Rectangle())
                 .accessibilityLabel(
@@ -79,8 +77,7 @@ public struct VideoControlView: View {
                         bundle: FlareAppleUILocalization.bundle
                     )
                 )
-                .backport
-                .glassButtonStyle(fallbackStyle: .plain)
+                .buttonStyle(.plain)
 
                 Text(formatTime(sliderValue))
                     .font(.caption)

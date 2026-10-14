@@ -5,7 +5,6 @@ import FlareAppleUI
 import PhotosUI
 import UniformTypeIdentifiers
 import SwiftUIIntrospect
-import SwiftUIBackports
 import Perception
 import NavigationBackport
 
@@ -79,7 +78,6 @@ struct ComposeScreen: View {
                     
                     TextEditor(text: $viewModel.text)
                         .font(.body)
-                        .scrollContentBackground(.hidden)
                         .textInputAutocapitalization(.sentences)
                         .keyboardType(.twitter)
                         .introspect(.textEditor, on: .iOS(.v16, .v17)) { textView in
@@ -131,12 +129,9 @@ struct ComposeScreen: View {
                 }
                 .padding(.horizontal)
             }
-            .scrollIndicators(.hidden)
             .safeAreaInset(edge: .bottom) {
                 composeActionBar
                     .padding()
-                    .backport
-                    .glassEffect(.regular, in: .capsule, fallbackBackground: .regularMaterial)
                     .padding()
             }
             

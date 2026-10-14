@@ -1,6 +1,5 @@
 import SwiftUI
 import KotlinSharedUI
-import SwiftUIBackports
 import UniformTypeIdentifiers
 import FlareAppleCore
 import FlareAppleUI

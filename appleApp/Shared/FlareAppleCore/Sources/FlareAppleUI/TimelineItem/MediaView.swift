@@ -196,7 +196,7 @@ public struct MediaVideoView: View {
             case .idle, .paused:
                 Image(fontAwesome: .circlePlay).mediaVideoBadgeStyle()
             case .loading:
-                ProgressView().tint(.white).mediaVideoBadgeStyle()
+                ProgressView().accentColor(.white).mediaVideoBadgeStyle()
             case .playing(let duration):
                 let remaining = max(Int((duration - player.position).rounded(.down)), 0)
                 Text(String(format: "%d:%02d", remaining / 60, remaining % 60))

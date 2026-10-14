@@ -438,7 +438,6 @@ private struct DiscoverUserSection: View {
                     }
                 }
             }
-            .scrollIndicators(.hidden)
         } header: {
             Text(FlareAppleUILocalization.string(titleKey))
         }
@@ -513,12 +512,10 @@ private struct DiscoverListStyle: ViewModifier {
     func body(content: Content) -> some View {
         #if os(iOS)
         content
-            .scrollContentBackground(.hidden)
             .listRowSpacing(2)
             .listStyle(.plain)
         #else
         content
-            .scrollContentBackground(.hidden)
             .listStyle(.inset)
         #endif
     }

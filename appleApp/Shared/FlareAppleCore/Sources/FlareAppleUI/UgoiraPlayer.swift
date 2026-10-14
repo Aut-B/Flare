@@ -207,7 +207,7 @@ struct UgoiraStatusOverlay: View {
         } else if session.image == nil {
             if session.isActive {
                 HStack(spacing: 8) {
-                    ProgressView().controlSize(.small).tint(.white)
+                    ProgressView().controlSize(.small).accentColor(.white)
                     if session.progress > 0 {
                         Text("\(Int((min(session.progress, 1) * 100).rounded()))%")
                             .font(.caption).monospacedDigit()

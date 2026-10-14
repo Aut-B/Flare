@@ -312,7 +312,7 @@ private struct AiConfigEditSheet: View {
                                     state.editingText = suggestion
                                 } label: {
                                     Text(suggestion)
-                                        .font(.callout.monospaced())
+                                        .font(.system(.callout, design: .monospaced))
                                         .lineLimit(1)
                                 }
                                 .buttonStyle(.plain)

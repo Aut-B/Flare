@@ -5,7 +5,6 @@ import LazyPager
 import AVKit
 import Photos
 import Kingfisher
-import SwiftUIBackports
 import VideoPlayer
 import Combine
 import UIKit

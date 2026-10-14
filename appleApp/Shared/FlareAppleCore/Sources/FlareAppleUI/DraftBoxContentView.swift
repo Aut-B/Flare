@@ -141,7 +141,6 @@ private struct DraftBoxContentRow: View {
                             }
                         }
                     }
-                    .scrollIndicators(.hidden)
                 }
 
                 HStack(spacing: 8) {

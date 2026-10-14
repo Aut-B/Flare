@@ -1,7 +1,6 @@
 import FlareAppleCore
 @preconcurrency import KotlinSharedUI
 import SwiftUI
-import SwiftUIBackports
 
 public struct EmojiPopup: View {
     @State private var presenter: KotlinPresenter<EmojiHistoryPresenterState>
@@ -54,8 +53,6 @@ public struct EmojiPopup: View {
             )
             #if os(iOS)
             .padding()
-            .backport
-            .glassEffect(.regularInteractive, in: .capsule, fallbackBackground: .regularMaterial)
             #endif
             .padding()
         }

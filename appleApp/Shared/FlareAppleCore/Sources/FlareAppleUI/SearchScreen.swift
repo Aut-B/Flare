@@ -47,7 +47,6 @@ public struct SearchScreen: View {
 
     private var content: some View {
         scrollingContent
-        .scrollContentBackground(.hidden)
         .searchListRowSpacing(2)
         .listStyle(.plain)
         .refreshable {
@@ -155,7 +154,6 @@ public struct SearchScreen: View {
                                 }
                             }
                         }
-                        .scrollIndicators(.hidden)
                     } header: {
                         Text("local_history_user", bundle: FlareAppleUILocalization.bundle)
                     }

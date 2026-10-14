@@ -25,7 +25,6 @@ struct UserListView: View {
                     }
                 }
             }
-            .scrollIndicators(.hidden)
             if let status = data.post {
                 VStack(spacing: 0) {
                     StatusView(data: status, isQuote: true, forceHideActions: true)

@@ -1,6 +1,5 @@
 import SwiftUI
 import KotlinSharedUI
-import SwiftUIBackports
 import FlareAppleCore
 
 private let statusMediaMaxVisibleMediaCount = 9
@@ -75,8 +74,7 @@ struct StatusMediaView: View {
                                 .foregroundStyle(.white)
                         }
                     }
-                    .backport
-                    .glassProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .accessibilityLabel(
                         Text("show_sensitive_media", bundle: FlareAppleUILocalization.bundle)
                     )
@@ -89,8 +87,7 @@ struct StatusMediaView: View {
                     } label: {
                         Image(fontAwesome: .eyeSlash)
                     }
-                    .backport
-                    .glassButtonStyle(fallbackStyle: .bordered)
+                    .buttonStyle(.bordered)
                     .accessibilityLabel(
                         Text("hide_sensitive_media", bundle: FlareAppleUILocalization.bundle)
                     )
@@ -144,7 +141,7 @@ struct StatusMediaView: View {
         if usesCarousel {
             let layoutSpec = carouselLayoutSpec
             let horizontalInsets = carouselLeadingPadding + carouselTrailingPadding
-            TimelineCarouselFrameLayout(
+            TimelineCarouselFrameLayoutCompat(
                 widthMultiplier: CGFloat(layoutSpec.widthMultiplier),
                 spacingMultiplier: CGFloat(layoutSpec.spacingMultiplier),
                 horizontalInsets: horizontalInsets,
@@ -184,12 +181,10 @@ struct StatusMediaView: View {
                             }
                             carouselOffset = offset
                         }
-                        .scrollTargetLayout()
                         .frame(height: geometry.size.height)
                         .padding(.leading, carouselLeadingPadding)
                         .padding(.trailing, carouselTrailingPadding)
                     }
-                    .scrollIndicators(.hidden)
                     .backportScrollPosition(id: $activeCarouselIndex, anchor: .center)
                     .modifier(TimelineScrollPhaseModifier { scrolling in
                         playback?.setScrolling(scrolling, source: carouselID, vertical: false)
@@ -231,7 +226,7 @@ struct StatusMediaView: View {
     private var mediaGrid: some View {
         let visibleData = limitMediaGridToNine ? Array(data.prefix(statusMediaMaxVisibleMediaCount)) : data
         let overflowCount = data.count - visibleData.count
-        return AdaptiveGrid(
+        return AdaptiveGridCompat(
             singleFollowsImageAspect: expandMediaSize,
             singleViewAspectRatio: data.first?.aspectRatio,
             spacing: 4,
@@ -290,7 +285,9 @@ struct StatusMediaView: View {
     }
 }
 
-private struct TimelineCarouselFrameLayout: Layout {
+@available(iOS 16.0, *)
+// iOS 15 回退：改为 internal，供 IOS15LayoutCompat 包装器访问。
+struct TimelineCarouselFrameLayout: Layout {
     let widthMultiplier: CGFloat
     let spacingMultiplier: CGFloat
     let horizontalInsets: CGFloat
@@ -406,8 +403,7 @@ struct AltTextOverlay: View {
             Text("ALT", bundle: FlareAppleUILocalization.bundle)
         }
         .padding()
-        .backport
-        .glassButtonStyle(fallbackStyle: .bordered)
+        .buttonStyle(.bordered)
         .accessibilityLabel(
             Text("media_view_alt_text", bundle: FlareAppleUILocalization.bundle)
         )

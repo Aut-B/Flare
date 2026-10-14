@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 16.0, *)
 public struct AdaptiveGrid: Layout {
 
     public let singleFollowsImageAspect: Bool

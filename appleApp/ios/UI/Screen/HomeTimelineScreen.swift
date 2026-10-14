@@ -2,7 +2,6 @@ import SwiftUI
 import FlareAppleUI
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
-import SwiftUIBackports
 import UIKit
 import Combine
 
@@ -436,7 +435,6 @@ private struct DeckTimelineLayout: View {
                 }
             }
         }
-        .scrollIndicators(.hidden)
     }
 }
 
@@ -454,8 +452,6 @@ private struct DeckTimelineColumnRoot: View {
                     TabIcon(tabItem: tabItem)
                 }
                 .padding()
-                .backport
-                .glassEffect()
             }
             .environment(\.timelineAppearance, baseTimelineAppearance)
             .id(tabItem.id)

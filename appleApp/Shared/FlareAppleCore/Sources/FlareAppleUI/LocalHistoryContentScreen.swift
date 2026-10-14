@@ -207,7 +207,6 @@ private struct LocalHistoryListStyle: ViewModifier {
         #if os(iOS)
         if selection == .status {
             content
-                .scrollContentBackground(.hidden)
                 .listRowSpacing(2)
                 .listStyle(.plain)
         } else {
@@ -216,7 +215,6 @@ private struct LocalHistoryListStyle: ViewModifier {
         #else
         if selection == .status {
             content
-                .scrollContentBackground(.hidden)
                 .listStyle(.plain)
         } else {
             content

@@ -1,6 +1,5 @@
 import SwiftUI
 import KotlinSharedUI
-import SwiftUIBackports
 import FlareAppleCore
 
 public struct StatusPollView: View {
@@ -76,7 +75,7 @@ public struct StatusPollView: View {
                         }
                         ProgressView(value: option.percentage)
                             .progressViewStyle(.linear)
-                            .tint(.accentColor)
+                            .accentColor(.accentColor)
                     }
                     .frame(maxWidth: .infinity)
                     .accessibilityLabel(Text(verbatim: option.title))
@@ -112,8 +111,7 @@ public struct StatusPollView: View {
                 } label: {
                     Text("poll_vote", bundle: FlareAppleUILocalization.bundle)
                 }
-                .backport
-                .glassProminentButtonStyle()
+                .buttonStyle(.borderedProminent)
             }
         }
     }

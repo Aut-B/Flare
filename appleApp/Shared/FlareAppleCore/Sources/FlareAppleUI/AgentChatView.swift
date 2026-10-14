@@ -1,8 +1,6 @@
 import FlareAppleCore
 import KotlinSharedUI
 import SwiftUI
-import SwiftUIBackports
-import Textual
 
 public struct AgentChatView: View {
     let messages: PagingState<AgentChatHistoryMessage>
@@ -86,7 +84,6 @@ public struct AgentChatView: View {
                         }
                         .padding()
                     }
-                    .defaultScrollAnchor(.bottom)
                 }
             }
         }
@@ -157,7 +154,6 @@ private struct AgentChatMessagesSkeleton: View {
             }
             .padding()
         }
-        .defaultScrollAnchor(.bottom)
     }
 }
 
@@ -206,15 +202,12 @@ private struct AgentChatInputBar: View {
                         .frame(width: 24, height: 24)
                 }
                 .buttonBorderShape(.circle)
-                .backport
-                .glassButtonStyle()
+                .buttonStyle(.automatic)
                 .disabled(!canSend)
                 .help(String(localized: "agent_chat_send", bundle: .main))
                 .accessibilityLabel(Text("agent_chat_send", bundle: .main))
                 .padding(.trailing, 8)
             }
-            .backport
-            .glassEffect()
             .padding(.horizontal)
             .padding(.bottom)
             .backportOnChange(of: draft) { _, value in
@@ -305,8 +298,10 @@ private struct AgentChatMessageBubble: View {
         if isUser {
             Text(verbatim: value)
         } else {
-            StructuredText(markdown: value)
-                .textual.textSelection(.enabled)
+            // iOS 15 回退：原用 Textual 的 StructuredText（该库最低 iOS 17），
+            // 改为纯文本渲染，Markdown 语法不再解析。
+            Text(verbatim: value)
+                .textSelection(.enabled)
         }
     }
 

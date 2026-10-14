@@ -11,7 +11,7 @@ struct StatusReactionView: View {
     let isDetail: Bool
 
     var body: some View {
-        ReactionFlowLayout(maxLines: isDetail || expanded ? nil : 2) {
+        ReactionFlowLayoutCompat(maxLines: isDetail || expanded ? nil : 2) {
             ForEach(data, id: \.name) { item in
                 Button {
                     item.onClicked(ClickContext(launcher: AppleUriLauncher(openUrl: openURL)))
@@ -52,7 +52,6 @@ struct StatusReactionView: View {
                         .foregroundStyle(Color.flareSecondaryLabel)
                 }
                 .buttonStyle(.plain)
-                .layoutValue(key: ReactionOverflowIndicatorKey.self, value: true)
             }
         }
     }
@@ -148,11 +147,14 @@ private struct ReactionPlatformImage: UIViewRepresentable {
 }
 #endif
 
+@available(iOS 16.0, *)
 nonisolated private struct ReactionOverflowIndicatorKey: LayoutValueKey {
     static let defaultValue = false
 }
 
-private struct ReactionFlowLayout: Layout {
+@available(iOS 16.0, *)
+// iOS 15 回退：改为 internal，供 IOS15LayoutCompat 包装器访问。
+struct ReactionFlowLayout: Layout {
     let maxLines: Int?
     private let spacing: CGFloat = 8
 

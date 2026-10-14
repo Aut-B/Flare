@@ -3,7 +3,6 @@ import FlareAppleUI
 import KotlinSharedUI
 import LazyPager
 import AVKit
-import SwiftUIBackports
 import UIKit
 import FlareAppleCore
 
@@ -260,8 +259,6 @@ struct MediaViewerScreen: View {
                 Image(fontAwesome: .xmark)
             }
             .accessibilityLabel("Close")
-            .backport
-            .glassEffect(.regularInteractive, in: .capsule, fallbackBackground: .regularMaterial)
 
             Spacer()
 
@@ -305,13 +302,10 @@ struct MediaViewerScreen: View {
                     }
                 }
                 .padding(.horizontal, 4)
-                .backport
-                .glassEffect(.regularInteractive, in: .capsule, fallbackBackground: .regularMaterial)
             }
         }
         .buttonStyle(.plain)
         .foregroundStyle(.white)
-        .safeAreaPadding([.top, .horizontal])
     }
 
     private func topOverlayButton<Label: View>(
@@ -331,16 +325,11 @@ struct MediaViewerScreen: View {
         if #available(iOS 26.0, *) {
             bottomOverlayContent
                 .padding()
-                .backport
-                .glassEffect(.tinted(.init(.systemGroupedBackground).opacity(0.5)), in: .rect(corners: .concentric, isUniform: true), fallbackBackground: .regularMaterial)
                 .padding()
                 .transition(.move(edge: .bottom).combined(with: .opacity))
         } else {
             bottomOverlayContent
                 .padding()
-                .safeAreaPadding(.bottom)
-                .backport
-                .glassEffect(.regular, in: .rect(cornerRadius: 24, style: .continuous), fallbackBackground: .regularMaterial)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
         }
     }
@@ -440,7 +429,6 @@ struct MediaViewerScreen: View {
             .presentationContentInteraction(.resizes)
             // The viewer supplies the expanded scrim so tapping it collapses, rather than dismisses, the sheet.
             .presentationBackgroundInteraction(.enabled)
-            .interactiveDismissDisabled()
             .preferredColorScheme(.dark)
         }
     }

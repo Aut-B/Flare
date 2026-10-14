@@ -1,6 +1,5 @@
 import SwiftUI
 import KotlinSharedUI
-import SwiftUIBackports
 import FlareAppleCore
 
 #if canImport(UIKit)
@@ -64,13 +63,9 @@ public struct StatusActionsView: View {
             }
         } else if !actions.isEmpty {
             let isStretched = postActionStyle == .stretch && allowSpacer
-            let layout = isStretched
-                ? AnyLayout(StatusActionStretchLayout(
-                    iconWidth: StatusActionHitArea.iconWidth(fontSize: fontSize),
-                    trailingNumberWidth: hasTrailingCount(actions) ? fontSize * 2.5 + 2 : 0
-                ))
-                : AnyLayout(HStackLayout(spacing: postActionStyle == .stretch ? nil : 4))
-            layout {
+            // iOS 15 回退：AnyLayout / HStackLayout / 自定义 Layout 均为 iOS 16+，
+            // 统一改用 HStack，不再区分 stretch 排布。
+            HStack(spacing: postActionStyle == .stretch ? nil : 4) {
                 ForEach(0..<actions.count, id: \.self) { index in
                     let item = actions[index]
                     if (index == actions.count - 1 && postActionStyle == .leftAligned) ||
@@ -414,6 +409,7 @@ private struct StatusActionStretchedLabel: View {
     }
 }
 
+@available(iOS 16.0, *)
 private struct StatusActionStretchLayout: Layout {
     let iconWidth: CGFloat
     let trailingNumberWidth: CGFloat
@@ -475,7 +471,7 @@ private struct StatusActionHoverModifier: ViewModifier {
 private extension View {
     @ViewBuilder
     func labelIconToTitleSpacingIfAvailable(_ spacing: CGFloat) -> some View {
-        self.backport.flareLabelIconToTitleSpacing(spacing)
+        self
     }
 
     @ViewBuilder

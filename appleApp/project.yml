@@ -79,8 +79,9 @@ packages:
     url: https://github.com/SimplyDanny/SwiftLintPlugins
     exactVersion: 0.65.1
   SwiftUI-Flow:
+    # iOS 15 回退：3.x 起最低 iOS 16，1.7.0 仍为 iOS 15 且 HFlow(spacing:) API 一致。
     url: https://github.com/tevelee/SwiftUI-Flow
-    exactVersion: 3.5.3
+    exactVersion: 1.7.0
   # Temporary fork: upstream Textual currently requires iOS 18 / macOS 15, while Flare still
   # supports iOS 17 / macOS 14. Switch back to gonzalezreal/textual when that is compatible.
   Textual:
@@ -172,13 +173,10 @@ targets:
       - package: swiftui-introspect
         product: SwiftUIIntrospect
       - package: Drops
-      - package: iOS-Backports
-        product: SwiftUIBackports
       - package: VideoPlayer
       - package: CHTCollectionViewWaterfallLayout
       - package: GSPlayer
       - package: ChatLayout
-      - package: Textual
       - target: FlareAppleCore
         destinationFilters: [iOS]
       - target: FlareAppleUI
@@ -463,16 +461,11 @@ targets:
     dependencies:
       - package: Kingfisher
         link: false
-      - package: iOS-Backports
-        product: SwiftUIBackports
-        link: false
       - package: SwiftUI-Flow
         product: Flow
         link: false
       - package: VideoPlayer
         destinationFilters: [iOS]
-        link: false
-      - package: Textual
         link: false
       - package: Perception
         link: false

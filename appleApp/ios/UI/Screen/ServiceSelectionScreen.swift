@@ -82,7 +82,6 @@ struct ServiceSelectionScreen: View {
     private func instanceInputView(state: ServiceSelectState) -> some View {
         TextField(ServiceSelectCopy.instancePlaceholder, text: $instanceInput)
             .textInputAutocapitalization(.never)
-            .autocorrectionDisabled()
             .keyboardType(.URL)
             .submitLabel(.done)
             .disabled(state.loading)
@@ -569,7 +568,6 @@ private struct LoginFieldView: View {
             default:
                 TextField(field.label.text, text: $value)
                     .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
                     .textContentType(field.id == "username" ? .username : nil)
             }
         }

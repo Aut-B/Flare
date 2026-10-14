@@ -1,6 +1,5 @@
 import SwiftUI
 import FlareAppleUI
-import SwiftUIBackports
 @preconcurrency import KotlinSharedUI
 import FlareAppleCore
 import Combine
@@ -33,10 +32,6 @@ struct ProfileScreen: View {
             }
         }
         .background(Color(timelineDisplayMode == .plain && horizontalSizeClass == .compact ? .clear : .systemGroupedBackground))
-        .toolbarBackground(
-            horizontalSizeClass == .compact ? Visibility.hidden : Visibility.automatic,
-            for: .navigationBar
-        )
         .navigationBarTitleDisplayMode(.inline)
         .backportOnChange(of: isBlockedProfile) { _, isBlocked in
             if !isBlocked {

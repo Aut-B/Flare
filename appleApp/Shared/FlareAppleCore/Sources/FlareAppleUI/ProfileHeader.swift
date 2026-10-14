@@ -1,7 +1,6 @@
 import FlareAppleCore
 import KotlinSharedUI
 import SwiftUI
-import SwiftUIBackports
 
 public enum CommonProfileHeaderConstants {
     public static let headerHeight: CGFloat = 200
@@ -155,8 +154,7 @@ public struct CommonProfileHeader: View {
                                 Button(action: {}, label: {
                                     Text("#loading", bundle: FlareAppleUILocalization.bundle)
                                 })
-                                .backport
-                                .glassProminentButtonStyle()
+                                .buttonStyle(.borderedProminent)
                                 .redacted(reason: .placeholder)
                             case .error:
                                 EmptyView()
@@ -193,20 +191,18 @@ public struct CommonProfileHeader: View {
             Button(action: action) {
                 Text(state.titleKey, bundle: FlareAppleUILocalization.bundle)
             }
-            .tint(.red)
+            .accentColor(.red)
             .buttonStyle(.borderedProminent)
         case .following, .requested:
             Button(action: action) {
                 Text(state.titleKey, bundle: FlareAppleUILocalization.bundle)
             }
-            .backport
-            .glassButtonStyle(fallbackStyle: .bordered)
+            .buttonStyle(.bordered)
         case .follow, .requestFollow:
             Button(action: action) {
                 Text(state.titleKey, bundle: FlareAppleUILocalization.bundle)
             }
-            .backport
-            .glassProminentButtonStyle()
+            .buttonStyle(.borderedProminent)
         }
     }
 
