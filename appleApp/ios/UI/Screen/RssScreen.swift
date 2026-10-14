@@ -44,8 +44,9 @@ struct RssScreen: View {
         }
         .navigationTitle("rss_title")
         .toolbar {
-            if !presenter.state.sources.isEmpty {
-                ToolbarItem {
+            ToolbarItem {
+                // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件搬进 ToolbarItem 内部
+                if !presenter.state.sources.isEmpty {
                     Button {
                         Task {
                             exportedOPMLContent = try? await ExportOPMLPresenter().export()
