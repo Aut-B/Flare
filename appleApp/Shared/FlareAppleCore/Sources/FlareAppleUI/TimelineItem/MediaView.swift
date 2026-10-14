@@ -108,21 +108,20 @@ public struct MediaVideoView: View {
                 }
             }
             .overlay(alignment: .bottomLeading) { statusOverlay }
-            .onGeometryChange(for: InlineVideoGeometry.self) { [timelinePlaybackViewport, isMultipleColumn] proxy in
+            // onGeometryChange + bounds(of: .scrollView) 分别是 iOS 16 / iOS 17 的 API。
+            // iOS 15 下退化为「自身 bounds ∩ 全局坐标换算出的可视区」，丢掉横向滚动的那一次裁剪。
+            .flareOnGeometry({ proxy in
                 let bounds = CGRect(origin: .zero, size: proxy.size)
-                let scrollBounds = proxy.bounds(of: .scrollView(axis: .vertical)) ?? bounds
                 let globalBounds = proxy.frame(in: .global)
-                let viewport = timelinePlaybackViewport?.offsetBy(dx: -globalBounds.minX, dy: -globalBounds.minY) ?? scrollBounds
-                let vertical = scrollBounds.intersection(viewport)
-                let horizontal = proxy.bounds(of: .scrollView(axis: .horizontal)) ?? bounds
-                let visible = bounds.intersection(vertical).intersection(horizontal)
+                let viewport = timelinePlaybackViewport?.offsetBy(dx: -globalBounds.minX, dy: -globalBounds.minY) ?? bounds
+                let visible = bounds.intersection(viewport)
                 return InlineVideoGeometry(
                     visible: !visible.isEmpty,
                     horizontalFraction: bounds.width > 0 ? max(0, visible.width) / bounds.width : 0,
                     distance: TimelineAutoplayPolicy.centerDistance(of: bounds, in: viewport, multipleColumns: isMultipleColumn),
-                    verticalOffset: scrollBounds.minY
+                    verticalOffset: globalBounds.minY
                 )
-            } action: { value in
+            }, action: { value in
                 if #unavailable(iOS 18.0, macOS 15.0) {
                     if let oldOffset = geometry.verticalOffset, oldOffset != value.verticalOffset {
                         playback.moved(source: "vertical", vertical: true)
@@ -130,7 +129,7 @@ public struct MediaVideoView: View {
                 }
                 geometry = value
                 updateCandidate()
-            }
+            })
             .onAppear {
                 if timelinePlayback == nil { fallbackPlayback.setSuspended(scenePhase != .active) }
                 appeared = true
