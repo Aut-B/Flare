@@ -21,7 +21,7 @@ public struct ListCardView<Content: View>: View {
     public var body: some View {
         content()
             .background {
-                UnevenRoundedRectangle(
+                FlareUnevenRoundedRectangle(
                     cornerRadii: cornerRadii,
                     style: .continuous
                 )
@@ -29,16 +29,16 @@ public struct ListCardView<Content: View>: View {
             }
     }
 
-    private var cornerRadii: RectangleCornerRadii {
+    private var cornerRadii: FlareRectangleCornerRadii {
         if isMultipleColumn {
-            RectangleCornerRadii(
+            FlareRectangleCornerRadii(
                 topLeading: cornerRadius,
                 bottomLeading: cornerRadius,
                 bottomTrailing: cornerRadius,
                 topTrailing: cornerRadius
             )
         } else {
-            RectangleCornerRadii(
+            FlareRectangleCornerRadii(
                 topLeading: index == 0 ? cornerRadius : 4,
                 bottomLeading: index == totalCount - 1 ? cornerRadius : 4,
                 bottomTrailing: index == totalCount - 1 ? cornerRadius : 4,
