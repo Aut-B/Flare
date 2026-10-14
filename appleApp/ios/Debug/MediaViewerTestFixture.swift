@@ -71,7 +71,7 @@ struct MediaViewerTestFixture: View {
             writer.startWriting()
             writer.startSession(atSourceTime: .zero)
             for frame in 0..<4 {
-                while !input.isReadyForMoreMediaData { try await Task.sleep(for: .milliseconds(10)) }
+                while !input.isReadyForMoreMediaData { try await Task.sleep(nanoseconds: 10 * 1_000_000) }
                 var buffer: CVPixelBuffer?
                 CVPixelBufferCreate(nil, 32, 32, kCVPixelFormatType_32ARGB, nil, &buffer)
                 if let buffer {
