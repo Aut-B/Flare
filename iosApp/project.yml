@@ -6,7 +6,7 @@ options:
   developmentLanguage: en
   defaultConfig: Release
   deploymentTarget:
-    iOS: "15.0"
+    iOS: "17.0"
 
 configs:
   Debug: debug
@@ -74,7 +74,7 @@ packages:
     exactVersion: 3.1.1
   swiftui-introspect:
     url: https://github.com/siteline/swiftui-introspect
-    exactVersion: 1.5.0
+    exactVersion: 26.0.1
   VideoPlayer:
     url: https://github.com/wxxsw/VideoPlayer
     exactVersion: 1.2.5
