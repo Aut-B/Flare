@@ -109,16 +109,15 @@ struct StatusMediaView: View {
                 self.activeCarouselIndex = nil
             }
         }
-        .onGeometryChange(for: CGFloat.self) { geometry in
-            geometry.bounds(of: .scrollView(axis: .vertical))?.minY ?? 0
-        } action: { offset in
+        // bounds(of: .scrollView(axis:)) 是 iOS 17 的坐标空间 API，iOS 15 用全局坐标判定位移。
+        .flareOnGeometry({ proxy in proxy.frame(in: .global).minY }, action: { offset in
             if #unavailable(iOS 18.0, macOS 15.0) {
                 if let verticalOffset, verticalOffset != offset {
                     playback?.moved(source: "vertical", vertical: true)
                 }
             }
             verticalOffset = offset
-        }
+        })
     }
 
     private var usesCarousel: Bool {
@@ -173,14 +172,12 @@ struct StatusMediaView: View {
                                 .id(index)
                             }
                         }
-                        .onGeometryChange(for: CGFloat.self) { proxy in
-                            proxy.frame(in: .scrollView(axis: .horizontal)).minX
-                        } action: { offset in
+                        .flareOnGeometry({ proxy in proxy.frame(in: .global).minX }, action: { offset in
                             if let carouselOffset, carouselOffset != offset {
                                 playback?.moved(source: carouselID, vertical: false)
                             }
                             carouselOffset = offset
-                        }
+                        })
                         .frame(height: geometry.size.height)
                         .padding(.leading, carouselLeadingPadding)
                         .padding(.trailing, carouselTrailingPadding)
@@ -411,7 +408,7 @@ struct AltTextOverlay: View {
             Text(altText)
                 .padding()
                 .frame(width: 280)
-                .presentationCompactAdaptation(.popover)
+                .flarePresentationCompactAdaptationPopover()
         }
     }
 }
