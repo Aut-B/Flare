@@ -39,16 +39,17 @@ struct ProfileScreen: View {
             }
         }
         .toolbar {
-            if horizontalSizeClass == .compact && !isProfileHeaderVisible && !shouldGateBlockedProfile, case .success(let userState) = onEnum(of: presenter.state.userState) {
-                ToolbarItem(placement: .principal) {
+            // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件搬进 ToolbarItem 内部
+            ToolbarItem(placement: .principal) {
+                if horizontalSizeClass == .compact, !isProfileHeaderVisible, !shouldGateBlockedProfile, case .success(let userState) = onEnum(of: presenter.state.userState) {
                     RichText(text: userState.data.name)
                 }
             }
             
-            if !shouldGateBlockedProfile && horizontalSizeClass == .regular, case .success(let tabState) = onEnum(of: presenter.state.tabs) {
-                let tabs = tabState.data.cast(ProfileState.Tab.self)
-                if tabs.count > 1 {
-                    ToolbarItemGroup {
+            ToolbarItem(placement: .automatic) {
+                if !shouldGateBlockedProfile, horizontalSizeClass == .regular, case .success(let tabState) = onEnum(of: presenter.state.tabs) {
+                    let tabs = tabState.data.cast(ProfileState.Tab.self)
+                    if tabs.count > 1 {
                         ForEach(0..<tabs.count, id: \.self) { index in
                             let tab = tabs[index]
                             Button {
@@ -63,21 +64,19 @@ struct ProfileScreen: View {
                         }
                     }
                 }
-                if #available(iOS 26.0, *) {
-                    ToolbarSpacer()
-                }
-            } else if !shouldGateBlockedProfile && horizontalSizeClass == .compact, case .success(let tabState) = onEnum(of: presenter.state.tabs) {
-                let tabs = tabState.data.cast(ProfileState.Tab.self)
-                if tabs.count > 1 && showToolbarTabPicker {
-                    ToolbarItem(placement: .primaryAction) {
+            }
+            ToolbarItem(placement: .primaryAction) {
+                if !shouldGateBlockedProfile, horizontalSizeClass == .compact, case .success(let tabState) = onEnum(of: presenter.state.tabs) {
+                    let tabs = tabState.data.cast(ProfileState.Tab.self)
+                    if tabs.count > 1, showToolbarTabPicker {
                         profileTabPicker(tabs: tabs)
                             .pickerStyle(.menu)
                             .fixedSize()
                     }
                 }
             }
-            if agentEnabled || !presenter.state.actions.isEmpty {
-                ToolbarItemGroup(placement: .primaryAction) {
+            ToolbarItem(placement: .primaryAction) {
+                if agentEnabled || !presenter.state.actions.isEmpty {
                     if agentEnabled, case .success(let userState) = onEnum(of: presenter.state.userState) {
                         Button {
                             onProfileInsight(userState.data.key)
