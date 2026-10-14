@@ -1,11 +1,13 @@
 import SwiftUI
+import FlareAppleCore
 
 struct TimelineScrollPhaseModifier: ViewModifier {
     let onChange: (Bool) -> Void
 
     func body(content: Content) -> some View {
         if #available(iOS 18.0, macOS 15.0, *) {
-            content.onScrollPhaseChange { _, phase in backportOnChange(phase != .idle) }
+            // 这里的 onChange 是结构体自身的闭包属性，不能换成 backportOnChange
+            content.onScrollPhaseChange { _, phase in onChange(phase != .idle) }
         } else {
             content
         }
@@ -98,7 +100,7 @@ final class TimelinePlaybackCoordinator {
         selectionTask?.cancel()
         motionTasks[motionSource]?.cancel()
         motionTasks[motionSource] = Task { [weak self] in
-            do { try await Task.sleep(for: .milliseconds(200)) } catch { return }
+            do { try await Task.sleep(nanoseconds: 200 * 1_000_000) } catch { return }
             guard let self else { return }
             self.scrollingSources.remove(motionSource)
             self.motionTasks.removeValue(forKey: motionSource)
@@ -141,7 +143,7 @@ final class TimelinePlaybackCoordinator {
             return
         }
         selectionTask = Task { [weak self] in
-            do { try await Task.sleep(for: .milliseconds(200)) } catch { return }
+            do { try await Task.sleep(nanoseconds: 200 * 1_000_000) } catch { return }
             self?.reconcile(allowStart: true)
             self?.returningGroupID = nil
         }
