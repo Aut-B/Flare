@@ -189,8 +189,7 @@ private struct AgentChatInputBar: View {
     let onSend: () -> Void
 
     var body: some View {
-        TextField(inputPlaceholder, text: $draft, axis: .vertical)
-            .lineLimit(1...5)
+        TextField(inputPlaceholder, text: $draft)
             .textFieldStyle(.plain)
             .padding()
             .onSubmit {
@@ -201,7 +200,7 @@ private struct AgentChatInputBar: View {
                     Image(systemName: "paperplane.fill")
                         .frame(width: 24, height: 24)
                 }
-                .buttonBorderShape(.circle)
+                .flareButtonBorderShapeCircle()
                 .buttonStyle(.automatic)
                 .disabled(!canSend)
                 .help(String(localized: "agent_chat_send", bundle: .main))
