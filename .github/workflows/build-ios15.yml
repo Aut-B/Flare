@@ -1,6 +1,5 @@
 name: Build Flare iOS 15 IPA (TrollStore)
 
-# 在 fork 里：Actions 标签 → 选中本工作流 → Run workflow 即可手动触发
 on:
   workflow_dispatch:
   push:
@@ -8,11 +7,12 @@ on:
 
 jobs:
   build:
-    # macOS 26 运行器预装 Xcode 26.x，满足 Flare 的 xcodeVersion: "26.0" 要求。
-    # 公开仓库的 fork 跑 macOS 运行器免费。
-    # 若你的账号没有 macos-26（标准 arm64）额度，可改用 macos-26-large（需付费/组织）
-    # 或第三方 depot-macos-26（免费，需到 depot.dev 授权一次）。
+    # GitHub 官方 macOS 26 运行器，预装 Xcode 26.6（Swift 6.2）。
+    # 上游用 xcode-27 标签（自托管/付费），免费账号用 macos-26 即可。
     runs-on: macos-26
+
+    env:
+      GRADLE_JVM_ARGS: "-Xmx12G -Dfile.encoding=UTF-8"
 
     steps:
       - name: Checkout
@@ -27,27 +27,34 @@ jobs:
       - name: Show Xcode version (调试用)
         run: xcodebuild -version
 
-      - name: Install XcodeGen (把 project.yml 生成 .xcodeproj)
+      - name: Download iOS device SDK (确保 iphoneos 可用)
+        run: xcodebuild -downloadPlatform iOS
+
+      - name: Install XcodeGen
         run: brew install xcodegen
 
-      - name: Generate Xcode project
+      - name: Generate Xcode project (appleApp)
         run: |
-          cd iosApp
+          cd appleApp
           xcodegen generate
 
-      - name: Build unsigned IPA (target iOS 15)
+      - name: Build unsigned IPA (iOS 15, device)
         run: |
           chmod +x gradlew
+          cd appleApp
           xcodebuild \
-            -project iosApp/Flare.xcodeproj \
-            -scheme Flare \
+            -project Flare.xcodeproj \
+            -scheme iOS \
             -configuration Release \
             -sdk iphoneos \
             -archivePath /tmp/Flare.xcarchive \
             archive \
             CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
             DEVELOPMENT_TEAM= \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" \
+            -skipPackagePluginValidation \
+            -skipMacroValidation
 
       - name: Package IPA
         run: |
