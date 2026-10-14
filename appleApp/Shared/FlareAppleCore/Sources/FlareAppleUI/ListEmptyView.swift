@@ -1,4 +1,5 @@
 import SwiftUI
+import FlareAppleCore
 
 public struct ListEmptyView: View {
     public init() {}
