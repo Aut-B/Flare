@@ -51,7 +51,7 @@ struct NostrRelaysScreen: View {
         }
         .navigationTitle("Manage relays")
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     showAddAlert = true
                 } label: {
