@@ -5,7 +5,7 @@ options:
   developmentLanguage: en
   defaultConfig: Release
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "15.0"
     macOS: "14.0"
 
 configs:
@@ -43,7 +43,7 @@ settings:
     SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
     SWIFT_EMIT_LOC_STRINGS: YES
     SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY: YES
-    SWIFT_VERSION: "6.3"
+    SWIFT_VERSION: "6.2"
   configs:
     Release:
       VALIDATE_PRODUCT: YES
@@ -88,7 +88,7 @@ packages:
     branch: main
   swiftui-introspect:
     url: https://github.com/siteline/swiftui-introspect
-    exactVersion: 27.1.0
+    exactVersion: 1.5.0
   VideoPlayer:
     url: https://github.com/wxxsw/VideoPlayer
     exactVersion: 1.2.5
