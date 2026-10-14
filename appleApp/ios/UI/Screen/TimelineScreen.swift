@@ -68,7 +68,7 @@ struct TimelineScreen: View {
         let minutes = appSettings.homeTimelineAutoRefreshInterval.minutes
         guard isHomeTimeline, minutes > 0, scenePhase == .active else { return }
         while true {
-            try await Task.sleep(for: .seconds(minutes * 60))
+            try await Task.sleep(nanoseconds: minutes * 60 * 1_000_000_000)
             if !presenter.state.isRefreshing {
                 try? await presenter.state.refreshSuspend()
             }
