@@ -27,6 +27,26 @@ jobs:
       - name: Show Xcode version (调试用)
         run: xcodebuild -version
 
+      # 多轮迭代靠这两个缓存把耗时压下来：Gradle/Kotlin 依赖与 Xcode 增量编译产物。
+      - name: Cache Gradle & Konan
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle.kts', '**/*.gradle.properties', 'gradle/libs.versions.toml') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: DerivedData
+          key: derived-${{ runner.os }}-${{ hashFiles('appleApp/**/*.swift', 'appleApp/project.yml') }}
+          restore-keys: |
+            derived-${{ runner.os }}-
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
@@ -44,6 +64,7 @@ jobs:
             -scheme iOS \
             -configuration Release \
             -sdk iphoneos \
+            -derivedDataPath DerivedData \
             -archivePath /tmp/Flare.xcarchive \
             archive \
             CODE_SIGNING_ALLOWED=NO \
