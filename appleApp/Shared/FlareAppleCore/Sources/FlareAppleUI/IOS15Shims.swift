@@ -255,6 +255,14 @@ public extension View {
     }
 
     @ViewBuilder
+    func flarePresentationDragIndicatorVisible() -> some View {
+        if #available(iOS 16.4, *) {
+            self.presentationDragIndicator(.visible)
+        } else {
+            self
+        }
+    }
+
     func flarePresentationCompactAdaptationNone() -> some View {
         if #available(iOS 16.4, *) {
             self.presentationCompactAdaptation(.none)
