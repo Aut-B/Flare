@@ -423,7 +423,7 @@ struct MediaViewerScreen: View {
                 }
             }
             .flarePresentationCompactAdaptationNone()
-            .presentationDragIndicator(.visible)
+            .flarePresentationDragIndicatorVisible()
             .flarePresentationContentInteractionResizes()
             // The viewer supplies the expanded scrim so tapping it collapses, rather than dismisses, the sheet.
             .flarePresentationBackgroundInteractionEnabled()
