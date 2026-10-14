@@ -65,10 +65,11 @@ nonisolated enum UgoiraEncoder {
         var timestamp: Int64 = 0
         for (index, frame) in frames.enumerated() {
             try Task.checkCancellation()
-            let deadline = ContinuousClock.now.advanced(by: .seconds(60))
+            // ContinuousClock / Duration 是 iOS 16 起才有，这里退回 NSDate 计时
+            let deadline = Date().addingTimeInterval(60)
             while !input.isReadyForMoreMediaData {
-                guard writer.status == .writing, ContinuousClock.now < deadline else { throw UgoiraExportError.encodingFailed }
-                try await Task.sleep(for: .milliseconds(5))
+                guard writer.status == .writing, Date() < deadline else { throw UgoiraExportError.encodingFailed }
+                try await Task.sleep(nanoseconds: 5 * 1_000_000)
             }
             try autoreleasepool {
                 let image = try decodeUgoiraImage(frame.path, maximumSize: smaller ? 1920 : nil)
