@@ -59,9 +59,10 @@ public struct ArticleScreen: View {
         }
         .articleNavigationBarTitleDisplayMode()
         .toolbar {
-            if let article = loadedArticle,
-               let sourceURL = article.sourceUrl.flatMap(URL.init(string:)) {
-                ToolbarItem {
+            // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件搬进 ToolbarItem 内部
+            ToolbarItem {
+                if let article = loadedArticle,
+                   let sourceURL = article.sourceUrl.flatMap(URL.init(string:)) {
                     Button {
                         openURL(sourceURL)
                     } label: {
@@ -69,37 +70,41 @@ public struct ArticleScreen: View {
                     }
                     .accessibilityLabel(Text("deep_link_account_picker_open_in_browser", bundle: FlareAppleUILocalization.bundle))
                 }
-                #if os(macOS)
-                if let onShareArticle {
-                    ToolbarItem {
-                        MacStatusShareMenu(
-                            data: MacStatusShareData(
-                                statusKey: articleKey,
-                                accountType: accountType,
-                                shareUrl: sourceURL.absoluteString
-                            ),
-                            onShareScreenshot: {
-                                onShareArticle(accountType, articleKey, sourceURL.absoluteString)
-                            }
-                        ) {
-                            Image(fontAwesome: .shareNodes)
-                        }
-                        .accessibilityLabel(Text("fx_share", bundle: FlareAppleUILocalization.bundle))
-                    }
-                }
-                #else
-                if let onShareArticle {
-                    ToolbarItem {
-                        Button {
-                            onShareArticle(accountType, articleKey, sourceURL.absoluteString)
-                        } label: {
-                            Image(fontAwesome: .shareNodes)
-                        }
-                        .accessibilityLabel(Text("fx_share", bundle: FlareAppleUILocalization.bundle))
-                    }
-                }
-                #endif
             }
+            #if os(macOS)
+            ToolbarItem {
+                if let article = loadedArticle,
+                   let sourceURL = article.sourceUrl.flatMap(URL.init(string:)),
+                   let onShareArticle {
+                    MacStatusShareMenu(
+                        data: MacStatusShareData(
+                            statusKey: articleKey,
+                            accountType: accountType,
+                            shareUrl: sourceURL.absoluteString
+                        ),
+                        onShareScreenshot: {
+                            onShareArticle(accountType, articleKey, sourceURL.absoluteString)
+                        }
+                    ) {
+                        Image(fontAwesome: .shareNodes)
+                    }
+                    .accessibilityLabel(Text("fx_share", bundle: FlareAppleUILocalization.bundle))
+                }
+            }
+            #else
+            ToolbarItem {
+                if let article = loadedArticle,
+                   let sourceURL = article.sourceUrl.flatMap(URL.init(string:)),
+                   let onShareArticle {
+                    Button {
+                        onShareArticle(accountType, articleKey, sourceURL.absoluteString)
+                    } label: {
+                        Image(fontAwesome: .shareNodes)
+                    }
+                    .accessibilityLabel(Text("fx_share", bundle: FlareAppleUILocalization.bundle))
+                }
+            }
+            #endif
         }
     }
 
@@ -314,7 +319,7 @@ private struct ArticleRssAuthorView: View {
     let publishDate: UiDateTime?
 
     private var host: String? {
-        sourceUrl.flatMap(URL.init(string:))?.host()
+        sourceUrl.flatMap(URL.init(string:)).flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: true)?.host }
     }
 
     var body: some View {
@@ -629,26 +634,26 @@ private struct ArticleLoadingView: View {
             LazyVStack {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     Rectangle()
-                        .fill(.placeholder)
+                        .fill(.flarePlaceholder)
                         .frame(height: 32)
                         .clipShape(.rect(cornerRadius: 8))
                     HStack(spacing: 12) {
                         Circle()
-                            .fill(.placeholder)
+                            .fill(.flarePlaceholder)
                             .frame(width: 44, height: 44)
                         VStack(alignment: .leading, spacing: 8) {
                             Rectangle()
-                                .fill(.placeholder)
+                                .fill(.flarePlaceholder)
                                 .frame(width: 160, height: 14)
                             Rectangle()
-                                .fill(.placeholder)
+                                .fill(.flarePlaceholder)
                                 .frame(width: 96, height: 12)
                         }
                     }
                     Divider()
                     ForEach(0..<6, id: \.self) { index in
                         Rectangle()
-                            .fill(.placeholder)
+                            .fill(.flarePlaceholder)
                             .frame(height: index == 5 ? 80 : 16)
                             .clipShape(.rect(cornerRadius: 8))
                     }
