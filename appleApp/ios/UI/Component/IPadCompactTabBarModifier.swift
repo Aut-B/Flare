@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftUIIntrospect
 import UIKit
+import FlareAppleCore
 
 @available(iOS 18.0, *)
 struct IPadCompactTabBarModifier: ViewModifier {
