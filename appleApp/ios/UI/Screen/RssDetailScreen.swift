@@ -115,7 +115,7 @@ private struct RssTranslateProvider<Content: View>: View {
             presenter: RssDetailTranslatePresenter(
                 htmlContent: document.content,
                 title: document.title,
-                targetLanguage: Locale.current.language.languageCode?.identifier ?? "en"
+                targetLanguage: flareCurrentLanguageCode
             )
         ))
     }
