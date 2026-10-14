@@ -56,7 +56,7 @@ struct HomeTimelineScreen: View {
                 if tabs.isEmpty {
                     BackportContentUnavailableView("tab_settings_title", systemImage: "square.grid.2x2")
                         .toolbar {
-                            ToolbarItem(placement: .topBarLeading) {
+                            ToolbarItem(placement: .navigationBarLeading) {
                                 Image(fontAwesome: .gear)
                                     .onTapGesture {
                                         toSecondaryMenu()
@@ -83,7 +83,7 @@ struct HomeTimelineScreen: View {
                         )
                         .toolbar {
                             leadingToolbarContent
-                            ToolbarItemGroup(placement: .topBarTrailing) {
+                            ToolbarItemGroup(placement: .navigationBarTrailing) {
                                 Button {
                                     toTabSetting()
                                 } label: {
@@ -126,49 +126,53 @@ struct HomeTimelineScreen: View {
                             selectedTabId = tabIds.first
                         }
                         .toolbar {
+                        // iOS 15 的 ToolbarContentBuilder 没有 buildIf：条件统一搬进 ToolbarItem 内部。
+                        // ToolbarTitleMenu 是 iOS 17 的 API，这里用等价的 Menu 包装在 title 位置实现。
                             leadingToolbarContent
-                            if horizontalSizeClass == .compact {
-                                ToolbarItem(placement: .title) {
-                                    Label {
-                                        TimelineTabTitle(title: tab.title)
-                                    } icon: {
-                                        TabIcon(tabItem: tab)
-                                    }
-                                    .labelStyle(.titleAndIcon)
-                                    .id(tab.id)
-                                }
-                                ToolbarTitleMenu {
-                                    ForEach(tabs, id: \.id) { item in
-                                        Toggle(isOn: Binding(get: {
-                                            tab.id == item.id
-                                        }, set: { value in
-                                            if value {
-                                                selectedTabId = item.id
+                            ToolbarItem(placement: .title) {
+                                if horizontalSizeClass == .compact {
+                                    Menu {
+                                        ForEach(tabs, id: \.id) { item in
+                                            Toggle(isOn: Binding(get: {
+                                                tab.id == item.id
+                                            }, set: { value in
+                                                if value {
+                                                    selectedTabId = item.id
+                                                }
+                                            })) {
+                                                Label {
+                                                    TimelineTabTitle(title: item.title)
+                                                } icon: {
+                                                    TabIcon(tabItem: item)
+                                                        .frame(width: 24)
+                                                        .scaledToFit()
+                                                }
+                                                .labelStyle(.titleAndIcon)
                                             }
-                                        })) {
-                                            Label {
-                                                TimelineTabTitle(title: item.title)
-                                            } icon: {
-                                                TabIcon(tabItem: item)
-                                                    .frame(width: 24)
-                                                    .scaledToFit()
-                                            }
-                                            .labelStyle(.titleAndIcon)
                                         }
-                                    }
-                                    Divider()
-                                    Button {
-                                        toTabSetting()
+                                        Divider()
+                                        Button {
+                                            toTabSetting()
+                                        } label: {
+                                            Label {
+                                                Text("tab_settings_add_tab")
+                                            } icon: {
+                                                Image(fontAwesome: .plus)
+                                            }
+                                        }
                                     } label: {
                                         Label {
-                                            Text("tab_settings_add_tab")
+                                            TimelineTabTitle(title: tab.title)
                                         } icon: {
-                                            Image(fontAwesome: .plus)
+                                            TabIcon(tabItem: tab)
                                         }
+                                        .labelStyle(.titleAndIcon)
+                                        .id(tab.id)
                                     }
                                 }
-                            } else {
-                                ToolbarItem(placement: .automatic) {
+                            }
+                            ToolbarItem(placement: .automatic) {
+                                if horizontalSizeClass != .compact {
                                     ScrollView(.horizontal) {
                                         HStack {
                                             ForEach(tabs, id: \.id) { item in
@@ -201,10 +205,9 @@ struct HomeTimelineScreen: View {
                                         .animation(.interactiveSpring(response: 0.25, dampingFraction: 0.85), value: selectedTabId)
                                     }
                                 }
-                                if #available(iOS 26.0, *) {
-                                    ToolbarSpacer()
-                                }
-                                ToolbarItem(placement: .primaryAction) {
+                            }
+                            ToolbarItem(placement: .primaryAction) {
+                                if horizontalSizeClass != .compact {
                                     Button {
                                         toTabSetting()
                                     } label: {
@@ -248,7 +251,7 @@ struct HomeTimelineScreen: View {
 
     @ToolbarContentBuilder
     private var leadingToolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
+        ToolbarItem(placement: .navigationBarLeading) {
             StateView(state: activeAccountPresenter.state.user) { user in
                 if user.avatar == nil {
                     Image(fontAwesome: .gear)
