@@ -52,21 +52,63 @@ extension View {
 }
 
 // MARK: - ContentUnavailableView 回退（iOS 17 专属）
-public struct BackportContentUnavailableView<Content: View>: View {
-    let content: Content
+// 与 SwiftUI 的 ContentUnavailableView 保持同一调用形态：
+// label（必填）、description（可选）、actions（可选）皆为 ViewBuilder 尾随闭包。
+public struct BackportContentUnavailableView<Label: View, Description: View, Actions: View>: View {
+    @ViewBuilder private let label: () -> Label
+    @ViewBuilder private let description: () -> Description
+    @ViewBuilder private let actions: () -> Actions
 
-    public init(@ViewBuilder content: () -> Content) {
-        self.content = content()
+    public init(
+        @ViewBuilder label: @escaping () -> Label,
+        @ViewBuilder description: @escaping () -> Description,
+        @ViewBuilder actions: @escaping () -> Actions
+    ) {
+        self.label = label
+        self.description = description
+        self.actions = actions
+    }
+
+    public init(
+        @ViewBuilder label: @escaping () -> Label,
+        @ViewBuilder description: @escaping () -> Description
+    ) where Actions == EmptyView {
+        self.init(label: label, description: description, actions: { EmptyView() })
+    }
+
+    public init(
+        @ViewBuilder label: @escaping () -> Label,
+        @ViewBuilder actions: @escaping () -> Actions
+    ) where Description == EmptyView {
+        self.init(label: label, description: { EmptyView() }, actions: actions)
+    }
+
+    public init(
+        @ViewBuilder label: @escaping () -> Label
+    ) where Description == EmptyView, Actions == EmptyView {
+        self.init(label: label, description: { EmptyView() }, actions: { EmptyView() })
     }
 
     public var body: some View {
-        content
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack(spacing: 12) {
+            label()
+                .font(.headline)
+            description()
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            actions()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+        .multilineTextAlignment(.center)
     }
 }
 
-extension BackportContentUnavailableView where Content == AnyView {
-    public init(_ titleKey: LocalizedStringKey, systemImage: String) {
+
+// HomeTimelineScreen 等处仍在用 ContentUnavailableView(_:systemImage:) 的简写形式。
+public extension BackportContentUnavailableView where Label == AnyView, Description == EmptyView, Actions == EmptyView {
+    init(_ titleKey: LocalizedStringKey, systemImage: String) {
         self.init {
             AnyView(
                 VStack(spacing: 16) {
@@ -77,8 +119,6 @@ extension BackportContentUnavailableView where Content == AnyView {
                         .font(.headline)
                         .multilineTextAlignment(.center)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
             )
         }
     }
