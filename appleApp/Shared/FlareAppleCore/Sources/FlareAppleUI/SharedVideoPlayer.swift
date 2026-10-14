@@ -259,7 +259,7 @@ final class SharedVideoPlayer {
         }
         retentionTask?.cancel()
         retentionTask = Task { [weak self] in
-            do { try await Task.sleep(for: .seconds(5)) } catch { return }
+            do { try await Task.sleep(nanoseconds: 5 * 1_000_000_000) } catch { return }
             self?.clearIfIdle()
         }
     }
@@ -271,7 +271,7 @@ final class SharedVideoPlayer {
         player.isMuted = true
         handoffTask?.cancel()
         handoffTask = Task { [weak self] in
-            do { try await Task.sleep(for: .milliseconds(500)) } catch { return }
+            do { try await Task.sleep(nanoseconds: 500 * 1_000_000) } catch { return }
             self?.finishHandoff()
         }
     }
@@ -581,6 +581,7 @@ public extension View {
 #if os(iOS)
 import UIKit
 import Perception
+import FlareAppleCore
 
 public final class VideoPlaybackSurfaceView: UIView {
     public override class var layerClass: AnyClass { AVPlayerLayer.self }
