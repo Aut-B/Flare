@@ -144,7 +144,7 @@ public struct VideoControlView: View {
             guard isProgressActive else { return }
             while !Task.isCancelled {
                 do {
-                    try await Task.sleep(for: .milliseconds(100))
+                    try await Task.sleep(nanoseconds: 100 * 1_000_000)
                 } catch {
                     return
                 }
