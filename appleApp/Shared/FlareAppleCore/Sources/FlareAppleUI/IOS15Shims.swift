@@ -204,7 +204,8 @@ public extension View {
         if #available(iOS 17.0, *) {
             self.searchable(text: text, isPresented: isPresented)
         } else {
-            self.searchable(text: text)
+            // iOS 15 的 searchable 必须带 prompt，且没有 isPresented 形态
+            self.searchable(text: text, prompt: "")
         }
     }
 
