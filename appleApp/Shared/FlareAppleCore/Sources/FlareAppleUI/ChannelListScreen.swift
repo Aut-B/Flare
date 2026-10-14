@@ -94,7 +94,7 @@ public struct ChannelListScreen<Destination: Hashable>: View {
         }
         .backportOnChange(of: selectedTab) { _, newValue in
             presenter.state.setType(data: newValue)
-        })
+        }
         .navigationTitle(Text("channels_title", bundle: FlareAppleUILocalization.bundle))
     }
 }
