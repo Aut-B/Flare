@@ -27,9 +27,6 @@ jobs:
       - name: Show Xcode version (调试用)
         run: xcodebuild -version
 
-      - name: Download iOS device SDK (确保 iphoneos 可用)
-        run: xcodebuild -downloadPlatform iOS
-
       - name: Install XcodeGen
         run: brew install xcodegen
 
