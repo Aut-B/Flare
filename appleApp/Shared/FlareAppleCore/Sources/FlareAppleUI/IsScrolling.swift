@@ -1,5 +1,6 @@
 import SwiftUI
 import Perception
+import FlareAppleCore
 
 @Perceptible
 public final class IsScrollingState {
