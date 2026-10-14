@@ -1,5 +1,6 @@
 import SwiftUI
 import Kingfisher
+import FlareAppleCore
 
 public struct NetworkImage: View {
     private let data: URL?
@@ -52,7 +53,7 @@ public struct NetworkImage: View {
                         NetworkImage(data: placeholder, customHeader: customHeader)
                     } else {
                         Rectangle()
-                            .fill(.placeholder)
+                            .fill(.flarePlaceholder)
                             .redacted(reason: .placeholder)
                     }
                 }
@@ -97,7 +98,7 @@ public struct NetworkImage: View {
                         )
                     } else {
                         Rectangle()
-                            .fill(.placeholder)
+                            .fill(.flarePlaceholder)
                             .redacted(reason: .placeholder)
                     }
                 }
@@ -190,7 +191,7 @@ private struct CrossfadeNetworkImage: View {
             )
         } else {
             Rectangle()
-                .fill(.placeholder)
+                .fill(.flarePlaceholder)
                 .redacted(reason: .placeholder)
         }
     }
