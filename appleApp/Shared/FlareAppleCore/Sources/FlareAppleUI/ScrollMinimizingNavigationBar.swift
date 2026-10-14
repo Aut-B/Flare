@@ -5,17 +5,7 @@ public struct ScrollMinimizingNavigationBar: ViewModifier {
 
     @ViewBuilder
     public func body(content: Content) -> some View {
-        #if os(iOS)
-        if #available(iOS 27.0, *) {
-            content.toolbarMinimizationBehavior(
-                .onScrollDown,
-                for: .navigationBar
-            )
-        } else {
-            content
-        }
-        #else
+        // toolbarMinimizationBehavior 属于 iOS 27 SDK，Xcode 26.6 的 SDK 里尚不存在，直接透传。
         content
-        #endif
     }
 }
