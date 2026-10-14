@@ -174,7 +174,7 @@ public struct ProfileTabsLoadingPlaceholder: View {
                             .overlay(alignment: .bottom) {
                                 if index == 0 {
                                     Capsule()
-                                        .fill(.placeholder)
+                                        .fill(.flarePlaceholder)
                                         .frame(height: 3)
                                 }
                             }
