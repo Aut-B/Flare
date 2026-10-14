@@ -222,8 +222,9 @@ struct ComposeScreen: View {
                     Text("Save your current content as a draft before leaving?")
                 }
             }
-            if presenter.state.showDraft {
-                ToolbarItem(placement: .topBarTrailing) {
+            // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件要放进 ToolbarItem 内部
+            ToolbarItem(placement: .primaryAction) {
+                if presenter.state.showDraft {
                     Button {
                         showDraftSheet = true
                     } label: {
