@@ -20,7 +20,7 @@ public nonisolated var flareCurrentLanguageCode: String {
 // MARK: - iOS 16 的 AnyShape
 
 public struct FlareAnyShape: Shape {
-    private let builder: (CGRect) -> Path
+    private let builder: @Sendable (CGRect) -> Path
 
     public init<S: Shape>(_ shape: S) {
         builder = { shape.path(in: $0) }
@@ -194,6 +194,31 @@ public extension View {
             self.searchable(text: text, prompt: prompt)
         }
     }
+
+    /// 无 prompt 的形态：iOS 17 起才有 isPresented，iOS 15 退化为不可编程收起的搜索框。
+    @ViewBuilder
+    func flareSearchable(
+        text: Binding<String>,
+        isPresented: Binding<Bool>
+    ) -> some View {
+        if #available(iOS 17.0, *) {
+            self.searchable(text: text, isPresented: isPresented)
+        } else {
+            self.searchable(text: text)
+        }
+    }
+
+    /// iOS 16 起才有 searchSuggestions，iOS 15 下直接丢弃（搜索框仍可用）。
+    @ViewBuilder
+    func flareSearchSuggestions<Suggestions: View>(
+        @ViewBuilder _ suggestions: () -> Suggestions
+    ) -> some View {
+        if #available(iOS 16.0, *) {
+            self.searchSuggestions(suggestions)
+        } else {
+            self
+        }
+    }
 }
 
 // MARK: - iOS 16.4+ 的弹层/按钮外观修饰器
@@ -210,7 +235,7 @@ public extension View {
 
     @ViewBuilder
     func flareButtonBorderShapeCircle() -> some View {
-        if #available(iOS 16.4, *) {
+        if #available(iOS 17.0, *) {
             self.buttonBorderShape(.circle)
         } else {
             self
