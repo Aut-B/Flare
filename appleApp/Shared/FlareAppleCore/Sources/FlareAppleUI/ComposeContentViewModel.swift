@@ -29,10 +29,8 @@ public final class ComposeContentViewModel {
     }
 
     public static var defaultLanguages: [String] {
-        if let code = Locale.current.language.languageCode?.identifier {
-            return [code]
-        }
-        return ["en"]
+        // Locale.current.language.languageCode 是 iOS 16 起的 API，退回 NSLocale 取值
+        [flareCurrentLanguageCode]
     }
 
     public var hasDraftContent: Bool {
