@@ -47,14 +47,16 @@ struct GalleryDetailScreen: View {
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if !isBigScreen {
-                ToolbarItem(placement: .principal) {
+            // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件搬进 ToolbarItem 内部
+            ToolbarItem(placement: .principal) {
+                if !isBigScreen {
                     GalleryCompactToolbarTitle(detailState: presenter.state.detail) {
                         navigateToProfile($0)
                     }
                 }
-
-                ToolbarItemGroup(placement: .primaryAction) {
+            }
+            ToolbarItem(placement: .primaryAction) {
+                if !isBigScreen {
                     Button {
                         switch onEnum(of: presenter.state.detail) {
                         case .success(let success):
@@ -229,7 +231,7 @@ private struct GalleryImagesView: View {
     var body: some View {
         if images.isEmpty {
             Rectangle()
-                .fill(.placeholder)
+                .fill(.flarePlaceholder)
                 .frame(height: 320)
                 .redacted(reason: .placeholder)
         } else if detail.orientation == .horizontal {
@@ -279,7 +281,7 @@ private struct GalleryBigScreenImagePane: View {
             Color(.systemBackground)
             if images.isEmpty {
                 Rectangle()
-                    .fill(.placeholder)
+                    .fill(.flarePlaceholder)
                     .frame(height: 320)
                     .redacted(reason: .placeholder)
             } else if detail.orientation == .horizontal {
@@ -370,7 +372,7 @@ private struct GalleryAuthorCard: View {
                         }
                 } else {
                     Circle()
-                        .fill(.placeholder)
+                        .fill(.flarePlaceholder)
                         .frame(width: 44, height: 44)
                 }
 
@@ -692,14 +694,14 @@ private struct GalleryCompactToolbarTitleLoading: View {
     var body: some View {
         HStack(spacing: 10) {
             Circle()
-                .fill(.placeholder)
+                .fill(.flarePlaceholder)
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading, spacing: 1) {
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(.placeholder)
+                    .fill(.flarePlaceholder)
                     .frame(width: 140, height: 14)
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(.placeholder)
+                    .fill(.flarePlaceholder)
                     .frame(width: 84, height: 10)
             }
             .frame(maxWidth: 220, alignment: .leading)
@@ -729,10 +731,10 @@ private struct GalleryDetailLoadingView: View {
     var body: some View {
         VStack(spacing: 12) {
             RoundedRectangle(cornerRadius: 16)
-                .fill(.placeholder)
+                .fill(.flarePlaceholder)
                 .frame(height: 420)
             RoundedRectangle(cornerRadius: 16)
-                .fill(.placeholder)
+                .fill(.flarePlaceholder)
                 .frame(height: 72)
         }
         .padding(16)
