@@ -84,7 +84,7 @@ public struct DiscoverContentScreen<AskAiOverlay: View>: View {
         .onSubmit(of: .search) {
             commitSearch(searchText)
         }
-        .backportOnChange(of: searchText) {
+        .backportOnChange(of: searchText) { _ in
             if isSearchPresented && searchText.isEmpty {
                 committedSearchText = ""
                 search(query: "")
@@ -101,9 +101,14 @@ public struct DiscoverContentScreen<AskAiOverlay: View>: View {
             }
         }
         .backportOnChange(of: presenter.state.selectedAccount) { _, newAccount in
-            if listRenderer == nil, let newAccount {
-                searchPresenter.state.setAccount(profile: newAccount)
-            }
+            // 抽成函数：这段闭包原来把类型检查拖超时（compiler is unable to type-check this expression）
+            applySearchAccount(newAccount)
+        }
+    }
+
+    private func applySearchAccount(_ newAccount: UiProfile?) {
+        if listRenderer == nil, let newAccount {
+            searchPresenter.state.setAccount(profile: newAccount)
         }
     }
 
@@ -150,10 +155,11 @@ public struct DiscoverContentScreen<AskAiOverlay: View>: View {
     #if os(iOS)
     @ToolbarContentBuilder
     private var accountToolbarItem: some ToolbarContent {
-        if case .success(let data) = onEnum(of: presenter.state.accounts) {
-            let accounts = data.data
-            if accounts.count > 1 {
-                ToolbarItem(placement: .primaryAction) {
+        // iOS 15 的 ToolbarContentBuilder 没有 buildIf：条件搬进 ToolbarItem 内部
+        ToolbarItem(placement: .primaryAction) {
+            if case .success(let data) = onEnum(of: presenter.state.accounts) {
+                let accounts = data.data
+                if accounts.count > 1 {
                     Menu {
                         ForEach(0..<accounts.count, id: \.self) { index in
                             let account = accounts[index] as! UiProfile
@@ -459,7 +465,7 @@ private struct DiscoverHashtagSection: View {
     }
 
     var content: some View {
-        HFlow(spacing: 8) {
+        FlareHFlow(spacing: 8) {
             ForEach(0..<Int(hashtagsState.itemCount), id: \.self) { index in
                 if let item = hashtagsState.peek(index: Int32(index)) {
                     Button {
