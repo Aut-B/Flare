@@ -63,7 +63,7 @@ struct TLDRView: View {
         } else {
             "Content:\n\(content.toTranslatableText())"
         }
-        self._presenter = .init(wrappedValue: .init(presenter: AiTLDRPresenter(source: text, targetLanguage: Locale.current.language.languageCode?.identifier ?? "en")))
+        self._presenter = .init(wrappedValue: .init(presenter: AiTLDRPresenter(source: text, targetLanguage: flareCurrentLanguageCode)))
     }
     
     var body: some View {
@@ -88,7 +88,7 @@ struct TranslateTextView: View {
     init(
         text: UiRichText
     ) {
-        self._presenter = .init(wrappedValue: .init(presenter: TranslatePresenter(source: text, targetLanguage: Locale.current.language.languageCode?.identifier ?? "en")))
+        self._presenter = .init(wrappedValue: .init(presenter: TranslatePresenter(source: text, targetLanguage: flareCurrentLanguageCode)))
     }
     
     var body: some View {
@@ -114,7 +114,7 @@ public struct TLDRTextView: View {
     public init(
         text: String
     ) {
-        self._presenter = .init(wrappedValue: .init(presenter: AiTLDRPresenter(source: text, targetLanguage: Locale.current.language.languageCode?.identifier ?? "en")))
+        self._presenter = .init(wrappedValue: .init(presenter: AiTLDRPresenter(source: text, targetLanguage: flareCurrentLanguageCode)))
     }
     
     public var body: some View {
