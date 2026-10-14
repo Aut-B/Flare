@@ -137,8 +137,9 @@ public struct AllListScreen<Destination: Hashable>: View {
             }
         }
         .toolbar {
-            if createListContent != nil {
-                ToolbarItem(placement: .primaryAction) {
+            // iOS 15 的 ToolbarContentBuilder 没有 buildIf，条件搬进 ToolbarItem 内部
+            ToolbarItem(placement: .primaryAction) {
+                if createListContent != nil {
                     Button {
                         showCreateListSheet = true
                     } label: {
