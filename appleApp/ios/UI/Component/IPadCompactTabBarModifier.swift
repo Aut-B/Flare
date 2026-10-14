@@ -16,7 +16,7 @@ struct IPadCompactTabBarModifier: ViewModifier {
                 tabController.value = controller
                 updateCompactTabs(controller)
             }
-            .backportOnChange(of: primaryTabIDs) {
+            .backportOnChange(of: primaryTabIDs) { _ in
                 // SwiftUI may replace the tabs later in the current view update.
                 DispatchQueue.main.async {
                     guard let controller = tabController.value else { return }
