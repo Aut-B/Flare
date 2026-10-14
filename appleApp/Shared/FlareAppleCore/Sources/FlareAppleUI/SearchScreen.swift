@@ -60,8 +60,8 @@ public struct SearchScreen: View {
             #endif
             accountToolbarItem
         }
-        .searchable(text: $searchText, isPresented: $isSearchPresented)
-        .searchSuggestions {
+        .flareSearchable(text: $searchText, isPresented: $isSearchPresented)
+        .flareSearchSuggestions {
             SearchHistorySuggestions(
                 state: searchHistoryPresenter.state,
                 searchText: searchText,
