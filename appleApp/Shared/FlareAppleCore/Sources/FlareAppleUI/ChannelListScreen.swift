@@ -92,7 +92,7 @@ public struct ChannelListScreen<Destination: Hashable>: View {
         .refreshable {
              try? await presenter.state.refreshSuspend()
         }
-        .backportOnChange(of: selectedTab, { oldValue, newValue in
+        .backportOnChange(of: selectedTab) { _, newValue in
             presenter.state.setType(data: newValue)
         })
         .navigationTitle(Text("channels_title", bundle: FlareAppleUILocalization.bundle))
