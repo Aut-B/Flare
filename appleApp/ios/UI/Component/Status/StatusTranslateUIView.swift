@@ -2,6 +2,7 @@ import UIKit
 import Combine
 import KotlinSharedUI
 import FlareAppleCore
+import FlareAppleUI
 
 /// UIKit translation / summary renderer for status detail cells.
 ///
@@ -262,7 +263,7 @@ final class StatusTranslateUIView: UIView, TimelineHeightProviding {
     }
 
     private func currentTargetLanguage() -> String {
-        Locale.current.language.languageCode?.identifier ?? "en"
+        flareCurrentLanguageCode
     }
 
     private func setNeedsHeightUpdate() {
