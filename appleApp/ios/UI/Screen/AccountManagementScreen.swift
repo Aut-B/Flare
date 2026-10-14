@@ -48,9 +48,9 @@ struct AccountManagementScreen: View {
         .onSuccessOf(of: presenter.state.accounts) { data in
             tabItems = data.cast(AccountsStateAccountItem.self)
         }
-        .backportOnChange(of: tabItems, { oldValue, newValue in
+        .backportOnChange(of: tabItems) { _, newValue in
             presenter.state.setOrder(value: newValue.map { item in item.account.accountKey })
-        })
+        }
         .alert("logout_title", isPresented: Binding(get: {
             pendingLogoutAccountKey != nil
         }, set: { value in
